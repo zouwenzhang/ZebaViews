@@ -25,7 +25,16 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
 
     private void init(Context context,AttributeSet attrs){
         clickHelper=new ViewClickHelper(this);
-        clickHelper.init(context,attrs);
+        clickHelper.getShape().init(context,attrs);
+        clickHelper.init();
+    }
+
+    public CShape getShape(){
+        return clickHelper.getShape();
+    }
+
+    public void setShapeDrawable(){
+        clickHelper.setDrawable();
     }
 
     @Override
@@ -71,4 +80,5 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
         return super.onTouchEvent(event);
 
     }
+
 }

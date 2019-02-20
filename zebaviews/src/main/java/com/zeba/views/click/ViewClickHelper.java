@@ -1,44 +1,70 @@
 package com.zeba.views.click;
 
-import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.zeba.views.R;
+import java.lang.ref.WeakReference;
 
 public class ViewClickHelper {
     private ViewClickScaleHelper scaleHelper;
     private ViewClickRipple2Helper ripple2Helper;
-    private int scaleTime=0;
-    private View view;
+    private WeakReference<View> wrView;
     private ViewSuperCallBack superCallBack;
+    private CShape shapeInfo;
 
     public ViewClickHelper(View v){
-        view=v;
+        wrView=new WeakReference<>(v);
         if(v!=null&&v instanceof ViewSuperCallBack){
             superCallBack=(ViewSuperCallBack) v;
         }
+        shapeInfo=new CShape(this);
     }
 
-    public void init(Context context, AttributeSet attrs){
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ClickShowType);
-        String tag=typedArray.getString(R.styleable.ClickShowType_showType);
-        float scaleTo=typedArray.getFloat(R.styleable.ClickShowType_scaleTo,0.9f);
-        scaleTime=typedArray.getInteger(R.styleable.ClickShowType_scaleTime,120);
-        typedArray.recycle();
-        if("0".equals(tag)){
-            scaleHelper=new ViewClickScaleHelper(view,scaleTo);
-        }else if("2".equals(tag)){
-            Drawable drawable=new ShapeHelper(context,attrs).getColorDrawable();
-            if(drawable!=null){
-                view.setBackground(drawable);
+    public void init(){
+        if(wrView==null||wrView.get()==null){
+            return;
+        }
+        View v=wrView.get();
+        Drawable drawable=v.getBackground();
+        if(drawable==null){
+            drawable=ShapeHelper.getShapeDrawable(shapeInfo);
+            v.setBackground(drawable);
+        }
+        setDrawable(drawable);
+    }
+
+    public CShape getShape(){
+        return shapeInfo;
+    }
+
+    public void setDrawable(){
+        if(wrView==null||wrView.get()==null){
+            return;
+        }
+        Drawable drawable=ShapeHelper.getShapeDrawable(shapeInfo);
+        if(shapeInfo.getShowType()==0){
+            wrView.get().setBackground(drawable);
+        }else{
+            setDrawable(drawable);
+        }
+    }
+
+    private void setDrawable(Drawable drawable){
+        if(wrView==null||wrView.get()==null){
+            return;
+        }
+        View view=wrView.get();
+        if(shapeInfo.getShowType()==1){
+            scaleHelper=new ViewClickScaleHelper(view,shapeInfo.getScaleTo());
+        }else if(shapeInfo.getShowType()==3){
+            Drawable rippleDrawable=RippleHelper.getRippleDrawable(drawable,shapeInfo);
+            if(rippleDrawable!=null){
+                view.setBackground(rippleDrawable);
             }else{
                 ripple2Helper=new ViewClickRipple2Helper();
-                ripple2Helper.init(context, view, new RippleDetector.Callback() {
+                ripple2Helper.init(view.getContext(), view,shapeInfo.getPressedColor(), new RippleDetector.Callback() {
                     @Override
                     public void performClickAfterAnimation() {
                         if(superCallBack!=null){
@@ -89,8 +115,11 @@ public class ViewClickHelper {
     }
 
     public void onDraw(Canvas canvas) {
+        if(wrView==null||wrView.get()==null){
+            return;
+        }
         if(ripple2Helper!=null){
-            ripple2Helper.onDraw(view,canvas);
+            ripple2Helper.onDraw(wrView.get(),canvas);
         }
     }
 
@@ -99,14 +128,20 @@ public class ViewClickHelper {
             return ripple2Helper.performClick();
         }
         if(scaleHelper!=null){
-            view.postDelayed(new Runnable() {
+            if(wrView==null||wrView.get()==null){
+                if(superCallBack!=null){
+                    return superCallBack.superPerformClick();
+                }
+                return true;
+            }
+            wrView.get().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     if(superCallBack!=null){
                         superCallBack.superPerformClick();
                     }
                 }
-            }, scaleTime);
+            }, shapeInfo.getScaleTime());
             return true;
         }
         if(superCallBack!=null){

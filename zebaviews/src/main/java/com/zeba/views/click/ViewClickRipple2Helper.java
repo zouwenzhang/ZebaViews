@@ -12,14 +12,8 @@ import android.view.View;
 public class ViewClickRipple2Helper{
     private RippleDetector mDetector;
 
-    public void init(Context context,View view,RippleDetector.Callback callback) {
-        int defaultColor=Color.parseColor("#999999");
-        Drawable drawable=view.getBackground();
-        if(drawable!=null&&drawable instanceof ColorDrawable){
-            ColorDrawable colorDrawable=(ColorDrawable) drawable;
-            defaultColor=colorDrawable.getColor();
-        }
-        mDetector = new RippleDetector(context, view, callback, defaultColor);
+    public void init(Context context,View view,int rippleColor,RippleDetector.Callback callback) {
+        mDetector = new RippleDetector(context, view, callback, rippleColor);
     }
 
     public void onSizeChanged(int w, int h) {

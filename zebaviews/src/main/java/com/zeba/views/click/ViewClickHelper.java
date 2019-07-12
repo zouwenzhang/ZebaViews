@@ -9,6 +9,7 @@ import java.lang.ref.WeakReference;
 
 public class ViewClickHelper {
     private ViewClickScaleHelper scaleHelper;
+    private ViewClickAlpha2Helper alpha2Helper;
     private ViewClickRipple2Helper ripple2Helper;
     private WeakReference<View> wrView;
     private ViewSuperCallBack superCallBack;
@@ -57,7 +58,11 @@ public class ViewClickHelper {
         }
         View view=wrView.get();
         if(shapeInfo.getShowType()==1){
-            scaleHelper=new ViewClickScaleHelper(view,shapeInfo.getScaleTo());
+            view.setBackground(drawable);
+            scaleHelper=new ViewClickScaleHelper(view,shapeInfo.getScaleTo(),shapeInfo.getScaleTime());
+        }else if(shapeInfo.getShowType()==2){
+            view.setBackground(drawable);
+            alpha2Helper=new ViewClickAlpha2Helper(view,shapeInfo.getAlphaTo(),shapeInfo.getAlphaTime());
         }else if(shapeInfo.getShowType()==3){
             Drawable rippleDrawable=RippleHelper.getRippleDrawable(drawable,shapeInfo);
             if(rippleDrawable!=null){
@@ -89,20 +94,26 @@ public class ViewClickHelper {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        switch(event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                if(scaleHelper!=null){
-                    scaleHelper.onPressed(true);
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-                if(scaleHelper!=null){
-                    scaleHelper.onPressed(false);
-                }
-                break;
+        if(wrView.get().isEnabled()&&wrView.get().isClickable()){
+            switch(event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    if(scaleHelper!=null){
+                        scaleHelper.onPressed(true);
+                    }else if(alpha2Helper!=null){
+                        alpha2Helper.onPressed(true);
+                    }
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    if(scaleHelper!=null){
+                        scaleHelper.onPressed(false);
+                    }else if(alpha2Helper!=null){
+                        alpha2Helper.onPressed(false);
+                    }
+                    break;
+            }
         }
         boolean rs=false;
         if(superCallBack!=null){

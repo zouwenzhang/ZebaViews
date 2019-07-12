@@ -1,13 +1,11 @@
 package com.zeba.views;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -18,11 +16,12 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class CropPictureView extends View {
+	public boolean isDebug=false;
+
 	private Bitmap bitmap;
 	private Matrix matrix;
 	private Matrix savedMatrix;
 	private Paint mPaint;
-	private Paint mPaintr;
 	private Rect mRect;
 	private Rect mRectr;
 
@@ -49,15 +48,13 @@ public class CropPictureView extends View {
 	private int mHeight;
 	private float scalen;
 	private float mscale=1;
-	private Canvas mCanvas;
-	private int mrwidth;
 	private Rect mTopLayerRect;
 	private Rect mBottomLayerRect;
 	private Paint mLayerPaint;
 	private ScaleMoveViewListener smvl;
 
-	public CropPictureView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
+	public CropPictureView(Context context, AttributeSet attrs) {
+		super(context, attrs);
 		init();
 	}
 
@@ -68,12 +65,6 @@ public class CropPictureView extends View {
 		mPaint.setStrokeWidth(3);
 		mPaint.setStyle(Style.STROKE);
 		mPaint.setColor(Color.parseColor("#ffffff"));
-		mPaintr=new Paint();
-		mPaintr.setStrokeWidth(3);
-		mPaintr.setStyle(Style.STROKE);
-		mPaintr.setColor(Color.parseColor("#ff0000"));
-		mPaintr.setStrokeCap(Cap.ROUND);
-		mPaintr.setAlpha(180);
 		mRect=new Rect();
 		mRectr=new Rect();
 		mRect.left=100;
@@ -93,6 +84,9 @@ public class CropPictureView extends View {
 	}
 	public void setScaleMoveViewListener(ScaleMoveViewListener sListener){
 		smvl=sListener;
+	}
+	public void setStrokeColor(int color){
+		mPaint.setColor(color);
 	}
 	public void initRectLocation(int w,int h){
 		mWidth=w;
@@ -122,12 +116,12 @@ public class CropPictureView extends View {
 	}
 	public void initShowBitmap(){
 		if(bitmap==null){
-			return;	
+			return;
 		}
 		bmpWidth=bitmap.getWidth();
 		bmpHeight=bitmap.getHeight();
 		bitmapWidth=bitmap.getWidth();
-		bitmapHeight=bitmap.getHeight();	
+		bitmapHeight=bitmap.getHeight();
 		points=new float[]{0,0,bitmap.getWidth(),bitmap.getHeight()};
 		float s=1f;
 		if(bitmapWidth<mWidth){
@@ -135,7 +129,7 @@ public class CropPictureView extends View {
 		}
 		if(bitmapHeight<mHeight){
 			if(mHeight/bitmapHeight>s){
-				s=mHeight/bitmapHeight; 
+				s=mHeight/bitmapHeight;
 			}
 		}
 		if(s!=1f){
@@ -147,7 +141,12 @@ public class CropPictureView extends View {
 	}
 	public void setBitmap(Bitmap bt) {
 		bitmap = bt;
-		initShowBitmap();
+		post(new Runnable() {
+			@Override
+			public void run() {
+				initShowBitmap();
+			}
+		});
 	}
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -155,77 +154,78 @@ public class CropPictureView extends View {
 		mWidth=getMeasuredWidth();
 		mHeight=getMeasuredHeight();
 		initRectLocation(mWidth,mHeight);
+
 	}
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction() & MotionEvent.ACTION_MASK) {
-		case MotionEvent.ACTION_DOWN:
-			savedMatrix.set(matrix);
-			startPoint.set(event.getX(), event.getY());
-			movePoint.set(event.getX(), event.getY());
-			lastPoint.x=event.getX();
-			lastPoint.y=event.getY();
-			mode = DRAG;
-			if(smvl!=null){
-				smvl.TouchDown();
-			}
-			break;
-		case MotionEvent.ACTION_UP:
-			if(smvl!=null){
-				smvl.TouchUp();
-			}
-		case MotionEvent.ACTION_POINTER_UP:
-			if(mode == ZOOM){
-				bmpWidth*=scalen;
-				bmpHeight*=scalen;
-				mscale=bmpWidth/bitmapWidth;
-			}
-			mode = NONE;
-			break;
-		case MotionEvent.ACTION_POINTER_DOWN:
-			oldDist = spacing(event);
-			if (oldDist > 10f) {
+			case MotionEvent.ACTION_DOWN:
 				savedMatrix.set(matrix);
-				midPoint(middlePoint, event);
-				mode = ZOOM;
-			}
-			break;
-		case MotionEvent.ACTION_MOVE:
-			if (mode == DRAG) {
-				matrix.set(savedMatrix);
-				float x=event.getX() - startPoint.x;
-				float y=event.getY()- startPoint.y;
-				mCropLeftv-=event.getX() - movePoint.x;
-				mCropTopv-=event.getY()- movePoint.y;
-				distPoint.set(mCropLeftv,mCropTopv);
+				startPoint.set(event.getX(), event.getY());
 				movePoint.set(event.getX(), event.getY());
-				matrix.postTranslate(x,y);
-				points=new float[]{0,0,bitmap.getWidth(),bitmap.getHeight()};
-				matrix.mapPoints(points);
-				if(points[0]>0){
-					x=0;
+				lastPoint.x=event.getX();
+				lastPoint.y=event.getY();
+				mode = DRAG;
+				if(smvl!=null){
+					smvl.TouchDown();
 				}
-				if(points[2]<mRect.right){
-					x=0;
+				break;
+			case MotionEvent.ACTION_UP:
+				if(smvl!=null){
+					smvl.TouchUp();
 				}
-				if(points[1]>mRect.top){
-					y=0;
+			case MotionEvent.ACTION_POINTER_UP:
+				if(mode == ZOOM){
+					bmpWidth*=scalen;
+					bmpHeight*=scalen;
+					mscale=bmpWidth/bitmapWidth;
 				}
-				if(points[3]<mRect.bottom){
-					y=0;
+				mode = NONE;
+				break;
+			case MotionEvent.ACTION_POINTER_DOWN:
+				oldDist = spacing(event);
+				if (oldDist > 10f) {
+					savedMatrix.set(matrix);
+					midPoint(middlePoint, event);
+					mode = ZOOM;
 				}
-				matrix.set(savedMatrix);
-				matrix.postTranslate(x,y);
+				break;
+			case MotionEvent.ACTION_MOVE:
+				if (mode == DRAG) {
+					matrix.set(savedMatrix);
+					float x=event.getX() - startPoint.x;
+					float y=event.getY()- startPoint.y;
+					mCropLeftv-=event.getX() - movePoint.x;
+					mCropTopv-=event.getY()- movePoint.y;
+					distPoint.set(mCropLeftv,mCropTopv);
+					movePoint.set(event.getX(), event.getY());
+					matrix.postTranslate(x,y);
+					points=new float[]{0,0,bitmap.getWidth(),bitmap.getHeight()};
+					matrix.mapPoints(points);
+					if(points[0]>0){
+						x=0;
+					}
+					if(points[2]<mRect.right){
+						x=0;
+					}
+					if(points[1]>mRect.top){
+						y=0;
+					}
+					if(points[3]<mRect.bottom){
+						y=0;
+					}
+					matrix.set(savedMatrix);
+					matrix.postTranslate(x,y);
 					savedMatrix.set(matrix);
 					lastPoint.x=x;
 					lastPoint.y=y;
 					startPoint.x=event.getX();
 					startPoint.y=event.getY();
-			} else if (mode == ZOOM) {
-				float newDist = spacing(event);
-				if (newDist > 10f) {
-					matrix.set(savedMatrix);
-					float sc = newDist / oldDist;
+				} else if (mode == ZOOM) {
+					float newDist = spacing(event);
+					if (newDist > 10f) {
+						matrix.set(savedMatrix);
+						float sc = newDist / oldDist;
 						matrix.postScale(sc, sc, middlePoint.x, middlePoint.y);
 						points=new float[]{0,0,bitmap.getWidth(),bitmap.getHeight()};
 						matrix.mapPoints(points);
@@ -243,7 +243,9 @@ public class CropPictureView extends View {
 							isLan=true;
 						}
 						if(isLan){
-							Log.e("zwz","not ok scalen="+scalen);
+							if(isDebug){
+								Log.e("zwz","not ok scalen="+scalen);
+							}
 							matrix.set(savedMatrix);
 							matrix.postScale(scalen, scalen, middlePoint.x, middlePoint.y);
 							if(isGoIn()){
@@ -251,11 +253,13 @@ public class CropPictureView extends View {
 							}
 						}else{
 							scalen=sc;
-							Log.e("zwz","ok scalen="+scalen);
+							if(isDebug){
+								Log.e("zwz","ok scalen="+scalen);
+							}
 						}
+					}
 				}
-			}
-			break;
+				break;
 		}
 		invalidate();
 		return true;
@@ -281,7 +285,9 @@ public class CropPictureView extends View {
 	public Bitmap getCropedBitmap(){
 		points=new float[]{0,0,bitmap.getWidth(),bitmap.getHeight()};
 		matrix.mapPoints(points);
-		Log.e("zwz","p0="+points[0]+",p1="+points[1]+",p2="+points[2]+",p3="+points[3]);
+		if(isDebug){
+			Log.e("zwz","p0="+points[0]+",p1="+points[1]+",p2="+points[2]+",p3="+points[3]);
+		}
 		RectF mRectfF=new RectF();
 		mRectfF.left=mRect.left;
 		mRectfF.top=mRect.top;
@@ -331,7 +337,7 @@ public class CropPictureView extends View {
 		float y = event.getY(0) + event.getY(1);
 		point.set(x / 2, y / 2);
 	}
-	
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -342,7 +348,8 @@ public class CropPictureView extends View {
 		canvas.drawRect(mTopLayerRect, mLayerPaint);
 		canvas.drawRect(mBottomLayerRect, mLayerPaint);
 		canvas.drawRect(mRect,mPaint);
-		
+
+
 	}
 	public interface ScaleMoveViewListener{
 		public void TouchDown();

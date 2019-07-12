@@ -3,8 +3,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     >
-
+    <com.zeba.views.click.ShapeTextView
+        android:id="@+id/tv_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:defaultColor="@color/colorPrimary"
+        app:roundRadius="10dp"
+        android:textSize="13sp"
+        android:textColor="#ffffff"
+        android:text="button"
+        android:gravity="center"
+        android:padding="15dp"
+        app:showType="scale"
+        android:layout_marginTop="10dp"
+        />
+    <com.zeba.views.click.ShapeTextView
+        android:id="@+id/tv_button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:defaultColor="@color/colorPrimary"
+        app:roundRadius="10dp"
+        android:textSize="13sp"
+        android:textColor="#ffffff"
+        android:text="button2"
+        android:gravity="center"
+        android:padding="15dp"
+        app:showType="alpha"
+        android:layout_marginTop="10dp"
+        />
+    <com.zeba.views.click.ShapeTextView
+        android:id="@+id/tv_button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:defaultColor="@color/colorPrimary"
+        app:roundRadius="10dp"
+        android:textSize="13sp"
+        android:textColor="#ffffff"
+        android:text="button3"
+        android:gravity="center"
+        android:padding="15dp"
+        app:showType="ripple"
+        android:layout_marginTop="10dp"
+        />
+    <com.zeba.views.click.ShapeLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:defaultColor="@color/colorPrimary"
+        app:roundRadius="20dp"
+        android:padding="15dp"
+        android:layout_marginTop="10dp"
+        app:showType="ripple">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#ffffff"
+            android:text="12345"/>
+    </com.zeba.views.click.ShapeLinearLayout>
     <com.zeba.views.AutoEnterLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -21,7 +21,9 @@ public class CShape {
 
     private int showType;
     private float scaleTo;
-    private int scaleTime=0;
+    private int scaleTime=100;
+    private float alphaTo;
+    private int alphaTime=100;
 
     private WeakReference<ViewClickHelper> wrHelper;
 
@@ -63,10 +65,26 @@ public class CShape {
         topRightRadius = typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_topRightRadius, 0);
         bottomLeftRadius = typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_bottomLeftRadius, 0);
         bottomRightRadius = typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_bottomRightRadius, 0);
-        showType= typedArray.getInt(R.styleable.ShapeTextView_showType,0);
+        String type=typedArray.getString(R.styleable.ShapeTextView_showType);
+        initShowType(type);
+//        showType= typedArray.getInteger(R.styleable.ShapeTextView_showType,0);
         scaleTo=typedArray.getFloat(R.styleable.ShapeTextView_scaleTo,0.95f);
         scaleTime=typedArray.getInteger(R.styleable.ShapeTextView_scaleTime,100);
+        alphaTo=typedArray.getFloat(R.styleable.ShapeTextView_alphaTo,0.7f);
+        alphaTime=typedArray.getInteger(R.styleable.ShapeTextView_alphaTime,200);
         typedArray.recycle();
+    }
+
+    private void initShowType(String type){
+        if("none".equals(type)||"0".equals(type)){
+            showType=0;
+        }else if("scale".equals(type)||"1".equals(type)){
+            showType=1;
+        }else if("alpha".equals(type)||"2".equals(type)){
+            showType=2;
+        }else if("ripple".equals(type)||"3".equals(type)){
+            showType=3;
+        }
     }
 
     public void update(){
@@ -228,5 +246,21 @@ public class CShape {
 
     public void setScaleTime(int scaleTime) {
         this.scaleTime = scaleTime;
+    }
+
+    public float getAlphaTo() {
+        return alphaTo;
+    }
+
+    public void setAlphaTo(int alphaTo) {
+        this.alphaTo = alphaTo;
+    }
+
+    public int getAlphaTime() {
+        return alphaTime;
+    }
+
+    public void setAlphaTime(int alphaTime) {
+        this.alphaTime = alphaTime;
     }
 }

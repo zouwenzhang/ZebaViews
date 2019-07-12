@@ -1,28 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <attr name="alphaTo" format="float"/>
+    <attr name="alphaTime" format="integer"/>
+    <attr name="showType" format="enum">
+        <enum name="none" value="0" />
+        <enum name="scale" value="1" />
+        <enum name="alpha" value="2" />
+        <enum name="ripple" value="3" />
+    </attr>
+    <attr name="scaleTo" format="float" />
+    <attr name="scaleTime" format="integer"/>
+    <attr name="strokeColor" format="color" /> <!--默认边框的颜色  -->
+    <attr name="pressedColor" format="color" /> <!--选中背景的颜色  -->
+    <attr name="defaultColor" format="color" /> <!--默认背景的颜色  -->
+    <attr name="parameter" format="float" /> <!--颜色变亮或变浅参数默认0.2  -->
+    <attr name="strokeWidth" format="dimension" /> <!--边框的宽度 -->
+    <attr name="roundRadius" format="dimension" /> <!--圆角大小 -->
+    <attr name="topLeftRadius" format="dimension" /> <!--左上圆角大小 -->
+    <attr name="topRightRadius" format="dimension" /> <!--右上圆角大小 -->
+    <attr name="bottomLeftRadius" format="dimension" /> <!--左下圆角大小 -->
+    <attr name="bottomRightRadius" format="dimension" /> <!--右下圆角大小 -->
     <declare-styleable name="ShapeTextView">
-        <attr name="showType" format="enum">
-            <enum name="none" value="0" />
-            <enum name="scale" value="1" />
-            <enum name="alpha" value="2" />
-            <enum name="ripple" value="3" />
-        </attr>
-        <attr name="scaleTo" format="float" />
-        <attr name="scaleTime" format="integer"/>
-        <attr name="strokeColor" format="color" /> <!--默认边框的颜色  -->
-        <attr name="selectStrokeColor" format="color" /> <!--选中边框的颜色  -->
-        <attr name="pressedColor" format="color" /> <!--选中背景的颜色  -->
-        <attr name="defaultColor" format="color" /> <!--默认背景的颜色  -->
-        <attr name="parameter" format="float" /> <!--颜色变亮或变浅参数默认0.2  -->
-        <attr name="strokeWidth" format="dimension" /> <!--边框的宽度 -->
-        <attr name="roundRadius" format="dimension" /> <!--圆角大小 -->
-        <attr name="topLeftRadius" format="dimension" /> <!--左上圆角大小 -->
-        <attr name="topRightRadius" format="dimension" /> <!--右上圆角大小 -->
-        <attr name="bottomLeftRadius" format="dimension" /> <!--左下圆角大小 -->
-        <attr name="bottomRightRadius" format="dimension" /> <!--右下圆角大小 -->
+        <attr name="showType"/>
+        <attr name="alphaTo"/>
+        <attr name="alphaTime"/>
+        <attr name="scaleTo"/>
+        <attr name="scaleTime"/>
+        <attr name="strokeColor"/>
+        <attr name="pressedColor"/>
+        <attr name="defaultColor"/>
+        <attr name="strokeWidth"/>
+        <attr name="roundRadius"/>
+        <attr name="topLeftRadius"/>
+        <attr name="topRightRadius"/>
+        <attr name="bottomLeftRadius"/>
+        <attr name="bottomRightRadius"/>
     </declare-styleable>
-
+    <declare-styleable name="ShapeLinearLayout">
+        <attr name="showType"/>
+        <attr name="alphaTo"/>
+        <attr name="alphaTime"/>
+        <attr name="scaleTo"/>
+        <attr name="scaleTime"/>
+        <attr name="strokeColor"/>
+        <attr name="pressedColor"/>
+        <attr name="defaultColor"/>
+        <attr name="strokeWidth"/>
+        <attr name="roundRadius"/>
+        <attr name="topLeftRadius"/>
+        <attr name="topRightRadius"/>
+        <attr name="bottomLeftRadius"/>
+        <attr name="bottomRightRadius"/>
+    </declare-styleable>
+    <declare-styleable name="ShapeFrameLayout">
+        <attr name="showType"/>
+        <attr name="alphaTo"/>
+        <attr name="alphaTime"/>
+        <attr name="scaleTo"/>
+        <attr name="scaleTime"/>
+        <attr name="strokeColor"/>
+        <attr name="pressedColor"/>
+        <attr name="defaultColor"/>
+        <attr name="strokeWidth"/>
+        <attr name="roundRadius"/>
+        <attr name="topLeftRadius"/>
+        <attr name="topRightRadius"/>
+        <attr name="bottomLeftRadius"/>
+        <attr name="bottomRightRadius"/>
+    </declare-styleable>
+    <declare-styleable name="ShapeImageView">
+        <attr name="showType"/>
+        <attr name="alphaTo"/>
+        <attr name="alphaTime"/>
+        <attr name="scaleTo"/>
+        <attr name="scaleTime"/>
+        <attr name="strokeColor"/>
+        <attr name="pressedColor"/>
+        <attr name="defaultColor"/>
+        <attr name="strokeWidth"/>
+        <attr name="roundRadius"/>
+        <attr name="topLeftRadius"/>
+        <attr name="topRightRadius"/>
+        <attr name="bottomLeftRadius"/>
+        <attr name="bottomRightRadius"/>
+    </declare-styleable>
     <declare-styleable name="TextGradientView">
         <attr name="startColor" format="color"/>
         <attr name="endColor" format="color"/>
@@ -33,5 +94,11 @@
         <attr name="horizontalGap" format="dimension" />
         <attr name="fillMode" format="integer" />
     </declare-styleable>
-
+    <declare-styleable name="RoundImageView">
+        <attr name="borderRadius" format="dimension" />
+        <attr name="roundType" format="enum">
+            <enum name="circle" value="0" />
+            <enum name="round" value="1" />
+        </attr>
+    </declare-styleable>
 </resources>

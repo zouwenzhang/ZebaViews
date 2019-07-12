@@ -4,39 +4,39 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.view.View;
 
-public class ViewClickScaleHelper {
+public class ViewClickAlpha2Helper {
 	private View view;
 	private boolean isPressed=false;
-	private ValueAnimator scaleAnimDown;
-	private ValueAnimator scaleAnimUp;
-	private float scale;
-	private int scaleTime;
-	public ViewClickScaleHelper(View v,float scaleTo,int scaleTime) {
+	private ValueAnimator alphaAnimDown;
+	private ValueAnimator alphaAnimUp;
+	private float alpha;
+	private int alphaTime=200;
+	public ViewClickAlpha2Helper(View v, float alphaTo,int alphaTime) {
 		view=v;
-		scale=scaleTo;
-		this.scaleTime=scaleTime;
+		alpha =alphaTo;
+		this.alphaTime=alphaTime;
 		initDown();
 		initUp();
 	}
 
-	public void setScale(float s){
-		scale=s;
+	public void setAlpha(float s){
+		alpha =s;
 		initDown();
 		initUp();
 	}
 	public void onPressed(boolean pressed){
 		isPressed=pressed;
 		if(pressed){
-			scaleAnimUp.cancel();
-			scaleAnimDown.start();
-		}else if(!scaleAnimDown.isRunning()){
-			scaleAnimUp.start();
+			alphaAnimUp.cancel();
+			alphaAnimDown.start();
+		}else if(!alphaAnimDown.isRunning()){
+			alphaAnimUp.start();
 		}
 	}
 	private void initDown(){
-		scaleAnimDown = ValueAnimator.ofFloat(1f,scale);
-		scaleAnimDown.setDuration(scaleTime);
-		scaleAnimDown.addListener(new Animator.AnimatorListener() {
+		alphaAnimDown = ValueAnimator.ofFloat(1f, alpha);
+		alphaAnimDown.setDuration(alphaTime);
+		alphaAnimDown.addListener(new Animator.AnimatorListener() {
 			@Override
 			public void onAnimationStart(Animator arg0) {
 				
@@ -48,7 +48,7 @@ public class ViewClickScaleHelper {
 			@Override
 			public void onAnimationEnd(Animator arg0) {
 				if(!isPressed){
-					scaleAnimUp.start();
+					alphaAnimUp.start();
 				}
 			}
 			@Override
@@ -56,19 +56,18 @@ public class ViewClickScaleHelper {
 				
 			}
 		});
-		scaleAnimDown.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+		alphaAnimDown.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 			@Override
 			public void onAnimationUpdate(ValueAnimator amin) {
 				float va=(Float) amin.getAnimatedValue();
-				view.setScaleX(va);
-				view.setScaleY(va);
+				view.setAlpha(va);
 			}
 		});
 	}
 	private void initUp(){
-		scaleAnimUp = ValueAnimator.ofFloat(scale,1f);
-		scaleAnimUp.setDuration(scaleTime);
-		scaleAnimUp.addListener(new Animator.AnimatorListener() {
+		alphaAnimUp = ValueAnimator.ofFloat(alpha,1f);
+		alphaAnimUp.setDuration(alphaTime);
+		alphaAnimUp.addListener(new Animator.AnimatorListener() {
 			@Override
 			public void onAnimationStart(Animator arg0) {
 				
@@ -86,12 +85,11 @@ public class ViewClickScaleHelper {
 				
 			}
 		});
-		scaleAnimUp.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+		alphaAnimUp.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 			@Override
 			public void onAnimationUpdate(ValueAnimator amin) {
 				float va=(Float) amin.getAnimatedValue();
-				view.setScaleX(va);
-				view.setScaleY(va);
+				view.setAlpha(va);
 			}
 		});
 	}

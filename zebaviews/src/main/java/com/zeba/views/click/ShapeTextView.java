@@ -55,6 +55,12 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
     }
 
     @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+
+    }
+
+    @Override
     public boolean performClick() {
         return clickHelper.performClick();
     }

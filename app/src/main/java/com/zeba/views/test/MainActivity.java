@@ -2,6 +2,7 @@ package com.zeba.views.test;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.tv_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("zwz","aaaa");
                 Toast.makeText(MainActivity.this,"click1",Toast.LENGTH_SHORT).show();
             }
         });

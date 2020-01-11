@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 
 import java.lang.ref.WeakReference;
 
@@ -14,6 +15,10 @@ public class ViewClickHelper {
     private WeakReference<View> wrView;
     private ViewSuperCallBack superCallBack;
     private CShape shapeInfo;
+    private int minMoveDistance;
+    private float mStartX;
+    private float mStartY;
+    private int actionState=0;
 
     public ViewClickHelper(View v){
         wrView=new WeakReference<>(v);
@@ -21,6 +26,7 @@ public class ViewClickHelper {
             superCallBack=(ViewSuperCallBack) v;
         }
         shapeInfo=new CShape(this);
+        minMoveDistance= ViewConfiguration.get(v.getContext()).getScaledTouchSlop();
     }
 
     public void init(){
@@ -97,20 +103,53 @@ public class ViewClickHelper {
         if(wrView.get().isEnabled()&&wrView.get().isClickable()){
             switch(event.getAction()){
                 case MotionEvent.ACTION_DOWN:
-                    if(scaleHelper!=null){
-                        scaleHelper.onPressed(true);
-                    }else if(alpha2Helper!=null){
-                        alpha2Helper.onPressed(true);
-                    }
+                    mStartX=event.getRawX();
+                    mStartY=event.getRawY();
+                    actionState=0;
+                    wrView.get().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(actionState!=0){
+                                return;
+                            }
+                            actionState=1;
+                            if(scaleHelper!=null){
+                                scaleHelper.onPressed(true);
+                            }else if(alpha2Helper!=null){
+                                alpha2Helper.onPressed(true);
+                            }
+                        }
+                    }, 200);
                     break;
                 case MotionEvent.ACTION_MOVE:
+                    if(Math.abs(event.getRawX()-mStartX)>minMoveDistance||Math.abs(event.getRawY()-mStartY)>minMoveDistance){
+                        if(actionState==0){
+                            actionState=-1;
+                        }
+                    }
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    if(scaleHelper!=null){
-                        scaleHelper.onPressed(false);
-                    }else if(alpha2Helper!=null){
-                        alpha2Helper.onPressed(false);
+                    if(actionState==0&&event.getAction()==MotionEvent.ACTION_CANCEL){
+                        actionState=-1;
+                        break;
+                    }
+                    if(actionState==0){
+                        actionState=2;
+                        if(scaleHelper!=null){
+                            scaleHelper.onPressed(true);
+                            scaleHelper.onPressed(false);
+                        }else if(alpha2Helper!=null){
+                            alpha2Helper.onPressed(true);
+                            alpha2Helper.onPressed(false);
+                        }
+                    }else if(actionState==1){
+                        actionState=2;
+                        if(scaleHelper!=null){
+                            scaleHelper.onPressed(false);
+                        }else if(alpha2Helper!=null){
+                            alpha2Helper.onPressed(false);
+                        }
                     }
                     break;
             }
@@ -152,7 +191,7 @@ public class ViewClickHelper {
                         superCallBack.superPerformClick();
                     }
                 }
-            }, shapeInfo.getScaleTime());
+            }, shapeInfo.getScaleTime()*2);
             return true;
         }
         if(superCallBack!=null){

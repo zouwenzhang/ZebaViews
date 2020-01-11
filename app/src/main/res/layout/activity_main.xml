@@ -84,5 +84,11 @@
             android:layout_height="20dp"
             android:background="#0000ff" />
     </com.zeba.views.AutoEnterLayout>
-
+    <com.zeba.views.RoundImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:roundType="circle"
+        app:borderRadius="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_background"/>
 </LinearLayout>

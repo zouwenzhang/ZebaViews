@@ -35,8 +35,7 @@ public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack{
         Map<String,String> map= clickHelper.getShape().init(context,attrs);
         clickHelper.init();
         styleCSS =new StyleCSS(this,map.get("css"));
-        animCSS =new AnimCSS(map.get("anim"));
-        animCSS.init(this);
+        animCSS =new AnimCSS(this,map.get("anim"));
     }
 
     public CShape getShape(){
@@ -60,7 +59,7 @@ public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack{
         post(new Runnable() {
             @Override
             public void run() {
-                animCSS.init(ShapeFrameLayout.this);
+                animCSS.init();
             }
         });
     }
@@ -70,7 +69,7 @@ public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack{
     }
 
     public AnimCSS anim(String css){
-        animCSS=new AnimCSS(css);
+        animCSS=new AnimCSS(this,css);
         return animCSS;
     }
 

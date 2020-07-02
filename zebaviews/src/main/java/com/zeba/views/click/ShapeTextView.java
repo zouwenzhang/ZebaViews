@@ -63,8 +63,7 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
             loadingHint=text;
         }
         styleCSS =new StyleCSS(this,style);
-        animCSS =new AnimCSS(anim);
-        animCSS.init(this);
+        animCSS =new AnimCSS(this,anim);
         if(clickHelper.getShape().getSvg().size()!=0){
             svgDrawable=new SVGDrawable(context,clickHelper.getShape().getSvg());
         }
@@ -135,7 +134,7 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
         post(new Runnable() {
             @Override
             public void run() {
-                animCSS.init(ShapeTextView.this);
+                animCSS.init();
             }
         });
     }
@@ -145,7 +144,7 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
     }
 
     public AnimCSS anim(String css){
-        animCSS=new AnimCSS(css);
+        animCSS=new AnimCSS(this,css);
         return animCSS;
     }
 

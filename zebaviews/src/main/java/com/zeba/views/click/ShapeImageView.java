@@ -57,8 +57,7 @@ public class ShapeImageView extends AppCompatImageView implements ViewSuperCallB
         Map<String,String> map= clickHelper.getShape().init(context,attrs);
         clickHelper.init();
         styleCSS =new StyleCSS(this,map.get("css"));
-        animCSS =new AnimCSS(map.get("anim"));
-        animCSS.init(this);
+        animCSS =new AnimCSS(this,map.get("anim"));
         if(clickHelper.getShape().getSvg().size()!=0){
             svgDrawable=new SVGDrawable(context,clickHelper.getShape().getSvg());
         }
@@ -103,7 +102,7 @@ public class ShapeImageView extends AppCompatImageView implements ViewSuperCallB
         post(new Runnable() {
             @Override
             public void run() {
-                animCSS.init(ShapeImageView.this);
+                animCSS.init();
             }
         });
     }
@@ -113,7 +112,7 @@ public class ShapeImageView extends AppCompatImageView implements ViewSuperCallB
     }
 
     public AnimCSS anim(String css){
-        animCSS=new AnimCSS(css);
+        animCSS=new AnimCSS(this,css);
         return animCSS;
     }
 

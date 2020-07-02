@@ -35,37 +35,39 @@ public class AnimCSS {
     private Runnable pauseRunnable;
     private Runnable resumeRunnable;
 
-    public AnimCSS(String style){
+    public AnimCSS(View v,String style){
         map=CSSFormat.form(style);
-        if(map.size()==0){
-            return;
+        refV=new WeakReference<>(v);
+        if(map.size()!=0){
+            if(map.get("d")==null){
+                map.put("d","300");
+            }
+            if(map.get("sd")==null){
+                map.put("sd","300");
+            }
+            if(map.get("one")==null){
+                map.put("one","1");
+            }
+            if(map.get("in")==null){
+                map.put("in","1");
+            }
         }
-        if(map.get("d")==null){
-            map.put("d","300");
-        }
-        if(map.get("sd")==null){
-            map.put("sd","300");
-        }
-        if(map.get("one")==null){
-            map.put("one","1");
-        }
-        if(map.get("in")==null){
-            map.put("in","1");
-        }
+        init();
     }
 
     public static void open(){
         devMode=false;
     }
 
-    public void init(View v){
+    public void init(){
         if(devMode){
             return;
         }
+        View v=refV.get();
         if(map.size()!=0&&!"0".equals(map.get("show"))&&!"0".equals(map.get("in"))){
             if(v.getVisibility()==View.INVISIBLE){
                 if(!isShowed()){
-                    create(v);
+                    create();
                     if(!"0".equals(map.get("auto"))&&!"1".equals(map.get("tc"))){
                         start();
                     }
@@ -184,12 +186,12 @@ public class AnimCSS {
         return this;
     }
 
-    public AnimCSS create(View v){
+    public AnimCSS create(){
         if(lastSet!=null&&lastSet.isRunning()){
             lastSet.cancel();
             lastSet=null;
         }
-        refV=new WeakReference<>(v);
+        View v=refV.get();
         AnimatorSet set=new AnimatorSet();
         set.setDuration(Integer.parseInt(map.get("d")));
         set.addListener(animatorListener);
@@ -255,22 +257,30 @@ public class AnimCSS {
     }
 
     public void start(){
-        if(lastSet==null){
+        if(refV==null||refV.get()==null){
             return;
         }
-        if(map.get("sd")==null){
-            lastSet.start();
-        }else{
-            long t=Long.parseLong(map.get("sd"));
-            refV.get().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if(lastSet!=null){
-                        lastSet.start();
-                    }
+        refV.get().post(new Runnable() {
+            @Override
+            public void run() {
+                if(lastSet==null){
+                    return;
                 }
-            },t);
-        }
+                if(map.get("sd")==null){
+                    lastSet.start();
+                }else{
+                    long t=Long.parseLong(map.get("sd"));
+                    refV.get().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(lastSet!=null){
+                                lastSet.start();
+                            }
+                        }
+                    },t);
+                }
+            }
+        });
     }
 
     private TimeInterpolator interpolator(String key){

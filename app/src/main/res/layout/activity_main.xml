@@ -15,6 +15,7 @@
         android:gravity="center"
         android:padding="15dp"/>
     <com.zeba.views.STextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:css="si:15; g:l; pr:15;pt:10;pb:10;pl:15; r:50; sw:1; ml:15; mr:15;mt:10;"
@@ -29,4 +30,9 @@
         app:defaultColor="#343434"
         app:css="m:15;"
         app:anim="m:b;sd:500;ms:s1;"/>
+    <com.zeba.views.click.ShapeImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher_background"
+        android:padding="15dp"/>
 </LinearLayout>

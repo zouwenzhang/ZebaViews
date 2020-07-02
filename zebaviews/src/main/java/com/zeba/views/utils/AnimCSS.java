@@ -37,6 +37,9 @@ public class AnimCSS {
 
     public AnimCSS(String style){
         map=CSSFormat.form(style);
+        if(map.size()==0){
+            return;
+        }
         if(map.get("d")==null){
             map.put("d","300");
         }
@@ -62,12 +65,14 @@ public class AnimCSS {
         if(map.size()!=0&&!"0".equals(map.get("show"))&&!"0".equals(map.get("in"))){
             if(v.getVisibility()==View.INVISIBLE){
                 if(!isShowed()){
-                    create(v).start();
+                    create(v);
+                    if(!"0".equals(map.get("auto"))&&!"1".equals(map.get("tc"))){
+                        start();
+                    }
                 }
             }else{
                 v.setVisibility(View.INVISIBLE);
             }
-
         }
     }
 
@@ -141,6 +146,13 @@ public class AnimCSS {
             }
         }
     };
+
+    public boolean isTextChangeStart(){
+        if("1".equals(map.get("tc"))){
+            return true;
+        }
+        return false;
+    }
 
     public AnimCSS onStart(Runnable runnable){
         startRunnable=runnable;

@@ -62,6 +62,11 @@ public class CShape {
     protected Map<String,String> init(Context context, AttributeSet attrs){
         Map<String,String> map=new HashMap<>();
         if(attrs==null){
+            line=new HashMap<>();
+            sweep=new HashMap<>();
+            circle=new HashMap<>();
+            shadow=new HashMap<>();
+            svg=new HashMap<>();
             return map;
         }
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShapeTextView);

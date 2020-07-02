@@ -46,5 +46,12 @@ public class MainActivity extends AppCompatActivity {
                 new GrabTopOutPriceDialog(MainActivity.this).show();
             }
         });
+        tv1=findViewById(R.id.tv_title);
+        tv1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                tv1.setText("adfsd123");
+            }
+        },200);
     }
 }

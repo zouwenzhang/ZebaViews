@@ -2,7 +2,6 @@ package com.zeba.views.utils;
 
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,7 +12,6 @@ import com.zeba.views.click.ShapeImageView;
 import com.zeba.views.click.ShapeLinearLayout;
 import com.zeba.views.click.ShapeTextView;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class StyleCSS {
@@ -35,19 +33,26 @@ public class StyleCSS {
             v.setPadding(pp,pp,pp,pp);
         }else{
             int[] pd=new int[4];
+            boolean find=false;
             if(sMap.get("pl")!=null){
                 pd[0]=dp(v,"pl");
+                find=true;
             }
             if(sMap.get("pt")!=null){
                 pd[1]=dp(v,"pt");
+                find=true;
             }
             if(sMap.get("pr")!=null){
                 pd[2]=dp(v,"pr");
+                find=true;
             }
             if(sMap.get("pb")!=null){
                 pd[3]=dp(v,"pb");
+                find=true;
             }
-            v.setPadding(pd[0],pd[1],pd[2],pd[3]);
+            if(find){
+                v.setPadding(pd[0],pd[1],pd[2],pd[3]);
+            }
         }
         if(sMap.get("si")!=null&&v instanceof TextView){
             TextView tv=(TextView) v;
@@ -75,19 +80,26 @@ public class StyleCSS {
         }else{
             CShape cShape=getShape(v);
             if(cShape!=null){
+                boolean find=false;
                 if(sMap.get("rtl")!=null){
                     cShape.topLeftRadius(dp(v,"rtl"));
+                    find=true;
                 }
                 if(sMap.get("rtr")!=null){
                     cShape.topRightRadius(dp(v,"rtr"));
+                    find=true;
                 }
                 if(sMap.get("rbl")!=null){
                     cShape.bottomLeftRadius(dp(v,"rbl"));
+                    find=true;
                 }
                 if(sMap.get("rbr")!=null){
                     cShape.bottomRightRadius(dp(v,"rbr"));
+                    find=true;
                 }
-                cShape.update();
+                if(find){
+                    cShape.update();
+                }
             }
         }
         if(sMap.get("sw")!=null){
@@ -124,29 +136,37 @@ public class StyleCSS {
                 FrameLayout.LayoutParams lp=(FrameLayout.LayoutParams)v.getLayoutParams();
                 lp.leftMargin=m;lp.topMargin=m;lp.rightMargin=m;lp.bottomMargin=m;
             }
+            v.setLayoutParams(v.getLayoutParams());
         }else{
             int[] ms=new int[4];
+            boolean find=false;
             if(sMap.get("ml")!=null){
                 ms[0]=dp(v,"ml");
+                find=true;
             }
             if(sMap.get("mt")!=null){
                 ms[1]=dp(v,"mt");
+                find=true;
             }
             if(sMap.get("mr")!=null){
                 ms[2]=dp(v,"mr");
+                find=true;
             }
             if(sMap.get("mb")!=null){
                 ms[3]=dp(v,"mb");
+                find=true;
             }
-            if(v.getLayoutParams() instanceof LinearLayout.LayoutParams){
-                LinearLayout.LayoutParams lp=(LinearLayout.LayoutParams)v.getLayoutParams();
-                lp.leftMargin=ms[0];lp.topMargin=ms[1];lp.rightMargin=ms[2];lp.bottomMargin=ms[3];
-            }else if(v.getLayoutParams() instanceof FrameLayout.LayoutParams){
-                FrameLayout.LayoutParams lp=(FrameLayout.LayoutParams)v.getLayoutParams();
-                lp.leftMargin=ms[0];lp.topMargin=ms[1];lp.rightMargin=ms[2];lp.bottomMargin=ms[3];
+            if(find){
+                if(v.getLayoutParams() instanceof LinearLayout.LayoutParams){
+                    LinearLayout.LayoutParams lp=(LinearLayout.LayoutParams)v.getLayoutParams();
+                    lp.leftMargin=ms[0];lp.topMargin=ms[1];lp.rightMargin=ms[2];lp.bottomMargin=ms[3];
+                }else if(v.getLayoutParams() instanceof FrameLayout.LayoutParams){
+                    FrameLayout.LayoutParams lp=(FrameLayout.LayoutParams)v.getLayoutParams();
+                    lp.leftMargin=ms[0];lp.topMargin=ms[1];lp.rightMargin=ms[2];lp.bottomMargin=ms[3];
+                }
+                v.setLayoutParams(v.getLayoutParams());
             }
         }
-        v.setLayoutParams(v.getLayoutParams());
     }
 
     private int dp(View v,String key){

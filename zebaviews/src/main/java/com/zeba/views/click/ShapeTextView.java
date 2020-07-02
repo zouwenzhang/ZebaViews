@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.SpannableString;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -66,6 +67,21 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
         animCSS.init(this);
         if(clickHelper.getShape().getSvg().size()!=0){
             svgDrawable=new SVGDrawable(context,clickHelper.getShape().getSvg());
+        }
+    }
+
+    public void setText(String text) {
+        this.text = text;
+        super.setText(text);
+        if(animCSS.isTextChangeStart()){
+            animStart();
+        }
+    }
+
+    public void setText(SpannableString text){
+        super.setText(text);
+        if(animCSS.isTextChangeStart()){
+            animStart();
         }
     }
 

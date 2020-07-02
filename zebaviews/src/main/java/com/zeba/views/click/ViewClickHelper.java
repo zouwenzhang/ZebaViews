@@ -35,7 +35,7 @@ public class ViewClickHelper {
         }
         View v=wrView.get();
         Drawable drawable=v.getBackground();
-        if(drawable==null){
+        if(drawable==null||shapeInfo.getDefaultColor()!=0){
             drawable=ShapeHelper.getShapeDrawable(shapeInfo);
             v.setBackground(drawable);
         }
@@ -74,6 +74,7 @@ public class ViewClickHelper {
             if(rippleDrawable!=null){
                 view.setBackground(rippleDrawable);
             }else{
+                view.setBackground(drawable);
                 ripple2Helper=new ViewClickRipple2Helper();
                 ripple2Helper.init(view.getContext(), view,shapeInfo.getPressedColor(), new RippleDetector.Callback() {
                     @Override

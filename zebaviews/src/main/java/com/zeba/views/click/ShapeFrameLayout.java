@@ -6,8 +6,15 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
+import com.zeba.views.utils.AnimCSS;
+import com.zeba.views.utils.StyleCSS;
+
+import java.util.Map;
+
 public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack{
     private ViewClickHelper clickHelper;
+    private StyleCSS styleCSS;
+    private AnimCSS animCSS;
     public ShapeFrameLayout(Context context) {
         super(context);
         init(context,null);
@@ -25,8 +32,11 @@ public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack{
 
     private void init(Context context,AttributeSet attrs){
         clickHelper=new ViewClickHelper(this);
-        clickHelper.getShape().init(context,attrs);
+        Map<String,String> map= clickHelper.getShape().init(context,attrs);
         clickHelper.init();
+        styleCSS =new StyleCSS(this,map.get("css"));
+        animCSS =new AnimCSS(map.get("anim"));
+        animCSS.init(this);
     }
 
     public CShape getShape(){
@@ -41,6 +51,31 @@ public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack{
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         clickHelper.onSizeChanged(w,h,oldw,oldh);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        styleCSS.initFinish(this);
+        post(new Runnable() {
+            @Override
+            public void run() {
+                animCSS.init(ShapeFrameLayout.this);
+            }
+        });
+    }
+
+    public void animStart(){
+        animCSS.start();
+    }
+
+    public AnimCSS anim(String css){
+        animCSS=new AnimCSS(css);
+        return animCSS;
+    }
+
+    public AnimCSS getAnimCSS(){
+        return animCSS;
     }
 
     @Override

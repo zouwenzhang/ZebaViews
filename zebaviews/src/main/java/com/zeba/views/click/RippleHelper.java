@@ -22,7 +22,7 @@ public class RippleHelper {
         }
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             ColorStateList pressedColorDw = ColorStateList.valueOf(pressedColor);
-            return new RippleDrawable(pressedColorDw, drawable, getShape(info));
+            return new RippleDrawable(pressedColorDw, drawable, ShapeHelper.getShapeDrawable(info));
         }
 //        else if(!isRipple){
 ////            StateListDrawable stateListDrawable = new StateListDrawable();

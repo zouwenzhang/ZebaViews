@@ -5,90 +5,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <com.zeba.views.click.ShapeTextView
-        android:id="@+id/tv_button"
+    <Button
+        android:id="@+id/tv_button4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:defaultColor="@color/colorPrimary"
-        app:roundRadius="10dp"
-        android:textSize="13sp"
-        android:textColor="#ffffff"
-        android:text="button"
-        android:gravity="center"
-        android:padding="15dp"
-        app:showType="scale"
-        android:layout_marginTop="10dp"
-        />
-    <com.zeba.views.click.ShapeTextView
-        android:id="@+id/tv_button2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:defaultColor="@color/colorPrimary"
-        app:roundRadius="10dp"
-        android:textSize="13sp"
-        android:textColor="#ffffff"
-        android:text="button2"
-        android:gravity="center"
-        android:padding="15dp"
-        app:showType="alpha"
-        android:layout_marginTop="10dp"
-        />
-    <com.zeba.views.click.ShapeTextView
-        android:id="@+id/tv_button3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:defaultColor="@color/colorPrimary"
-        app:roundRadius="10dp"
         android:textSize="13sp"
         android:textColor="#ffffff"
         android:text="button3"
         android:gravity="center"
-        android:padding="15dp"
-        app:showType="ripple"
-        android:layout_marginTop="10dp"
+        android:padding="15dp"/>
+    <com.zeba.views.STextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:css="si:15; g:l; pr:15;pt:10;pb:10;pl:15; r:50; sw:1; ml:15; mr:15;mt:10;"
+        app:anim="m:t;ms:s1;"
+        android:textColor="#343434"
+        android:text="12445"
+        app:strokeColor="#343434"
         />
-    <com.zeba.views.click.ShapeLinearLayout
+    <com.zeba.views.SLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:defaultColor="@color/colorPrimary"
-        app:roundRadius="20dp"
-        android:padding="15dp"
-        android:layout_marginTop="10dp"
-        app:showType="ripple">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#ffffff"
-            android:text="12345"/>
-    </com.zeba.views.click.ShapeLinearLayout>
-    <com.zeba.views.AutoEnterLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
-        <View
-            android:layout_width="140dp"
-            android:layout_height="20dp"
-            android:background="#ff0000" />
-
-        <View
-            android:layout_width="140dp"
-            android:layout_height="20dp"
-            android:background="#00ff00"
-            android:visibility="gone" />
-
-        <View
-            android:layout_width="140dp"
-            android:layout_height="20dp"
-            android:background="#0000ff" />
-    </com.zeba.views.AutoEnterLayout>
-    <com.zeba.views.RoundImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:roundType="circle"
-        app:borderRadius="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background"/>
+        android:layout_height="30dp"
+        app:defaultColor="#343434"
+        app:css="m:15;"
+        app:anim="m:b;sd:500;ms:s1;"/>
 </LinearLayout>

@@ -20,6 +20,18 @@
     <attr name="topRightRadius" format="dimension" /> <!--右上圆角大小 -->
     <attr name="bottomLeftRadius" format="dimension" /> <!--左下圆角大小 -->
     <attr name="bottomRightRadius" format="dimension" /> <!--右下圆角大小 -->
+    <attr name="loadingSize" format="dimension" /> <!--loading大小 -->
+    <attr name="loadingStrokeWidth" format="dimension" /> <!--loading圆圈厚度 -->
+    <attr name="loadingHint" format="string" /> <!--loading提示语 -->
+    <attr name="loadingPadding" format="dimension" /> <!--loading离文字的距离 -->
+    <attr name="css" format="string" />
+    <attr name="anim" format="string" />
+    <attr name="gradientLine" format="string"/>
+    <attr name="gradientSweep" format="string"/>
+    <attr name="gradientCircle" format="string"/>
+    <attr name="shadow" format="string"/>
+    <attr name="svg" format="string"/>
+
     <declare-styleable name="ShapeTextView">
         <attr name="showType"/>
         <attr name="alphaTo"/>
@@ -35,6 +47,17 @@
         <attr name="topRightRadius"/>
         <attr name="bottomLeftRadius"/>
         <attr name="bottomRightRadius"/>
+        <attr name="loadingSize"/>
+        <attr name="loadingStrokeWidth"/>
+        <attr name="loadingHint"/>
+        <attr name="loadingPadding"/>
+        <attr name="css"/>
+        <attr name="anim"/>
+        <attr name="gradientLine"/>
+        <attr name="gradientSweep"/>
+        <attr name="gradientCircle"/>
+        <attr name="shadow"/>
+        <attr name="svg"/>
     </declare-styleable>
     <declare-styleable name="ShapeLinearLayout">
         <attr name="showType"/>
@@ -51,6 +74,13 @@
         <attr name="topRightRadius"/>
         <attr name="bottomLeftRadius"/>
         <attr name="bottomRightRadius"/>
+        <attr name="css"/>
+        <attr name="anim"/>
+        <attr name="gradientLine"/>
+        <attr name="gradientSweep"/>
+        <attr name="gradientCircle"/>
+        <attr name="shadow"/>
+        <attr name="svg"/>
     </declare-styleable>
     <declare-styleable name="ShapeFrameLayout">
         <attr name="showType"/>
@@ -67,6 +97,13 @@
         <attr name="topRightRadius"/>
         <attr name="bottomLeftRadius"/>
         <attr name="bottomRightRadius"/>
+        <attr name="css"/>
+        <attr name="anim"/>
+        <attr name="gradientLine"/>
+        <attr name="gradientSweep"/>
+        <attr name="gradientCircle"/>
+        <attr name="shadow"/>
+        <attr name="svg"/>
     </declare-styleable>
     <declare-styleable name="ShapeImageView">
         <attr name="showType"/>
@@ -83,6 +120,13 @@
         <attr name="topRightRadius"/>
         <attr name="bottomLeftRadius"/>
         <attr name="bottomRightRadius"/>
+        <attr name="css"/>
+        <attr name="anim"/>
+        <attr name="gradientLine"/>
+        <attr name="gradientSweep"/>
+        <attr name="gradientCircle"/>
+        <attr name="shadow"/>
+        <attr name="svg"/>
     </declare-styleable>
     <declare-styleable name="TextGradientView">
         <attr name="startColor" format="color"/>

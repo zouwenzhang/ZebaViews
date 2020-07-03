@@ -1,34 +1,41 @@
-package com.zeba.views.click;
+package com.zeba.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.support.v7.widget.AppCompatEditText;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.LinearLayout;
 
+import com.zeba.views.click.CShape;
+import com.zeba.views.click.ViewClickHelper;
+import com.zeba.views.interfaces.TextChangeListener;
 import com.zeba.views.utils.AnimCSS;
 import com.zeba.views.utils.StyleCSS;
 
 import java.util.Map;
 
-public class ShapeLinearLayout extends LinearLayout implements ViewSuperCallBack{
+public class SEditText extends AppCompatEditText implements TextWatcher {
+
     private ViewClickHelper clickHelper;
     private StyleCSS styleCSS;
     private AnimCSS animCSS;
-    public ShapeLinearLayout(Context context) {
-        super(context);
-        init(context,null);
+
+    public SEditText(Context context) {
+        this(context,null);
     }
 
-    public ShapeLinearLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context,attrs);
+    public SEditText(Context context, AttributeSet attrs) {
+        this(context, attrs,0);
     }
 
-    public ShapeLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context,attrs);
     }
+
+    public TextChangeListener textChangeListener;
 
     private void init(Context context,AttributeSet attrs){
         clickHelper=new ViewClickHelper(this);
@@ -39,6 +46,7 @@ public class ShapeLinearLayout extends LinearLayout implements ViewSuperCallBack
         if(clickHelper.getShape().getShadow().size()!=0){
             setLayerType(LAYER_TYPE_SOFTWARE,null);
         }
+        addTextChangedListener(this);
     }
 
     public CShape getShape(){
@@ -101,19 +109,22 @@ public class ShapeLinearLayout extends LinearLayout implements ViewSuperCallBack
         return clickHelper.performLongClick();
     }
 
-
-    @Override
-    public boolean superPerformClick() {
-        return super.performClick();
+    public void textChange(TextChangeListener listener){
+        textChangeListener=listener;
     }
 
     @Override
-    public boolean superPerformLongClick() {
-        return super.performLongClick();
-    }
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+    }
     @Override
-    public boolean superOnTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if(textChangeListener!=null){
+            textChangeListener.onChange(charSequence);
+        }
+    }
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 }

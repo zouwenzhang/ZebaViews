@@ -59,7 +59,7 @@ public class CShape {
         wrHelper=new WeakReference<>(helper);
     }
 
-    protected Map<String,String> init(Context context, AttributeSet attrs){
+    public Map<String,String> init(Context context, AttributeSet attrs){
         Map<String,String> map=new HashMap<>();
         if(attrs==null){
             line=new HashMap<>();

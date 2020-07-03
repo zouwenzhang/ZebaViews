@@ -67,6 +67,9 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
         if(clickHelper.getShape().getSvg().size()!=0){
             svgDrawable=new SVGDrawable(context,clickHelper.getShape().getSvg());
         }
+        if(clickHelper.getShape().getShadow().size()!=0){
+            setLayerType(LAYER_TYPE_SOFTWARE,null);
+        }
     }
 
     public void setText(String text) {

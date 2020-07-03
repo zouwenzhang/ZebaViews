@@ -55,6 +55,30 @@ public class AnimCSS {
         init();
     }
 
+    public AnimCSS(String style){
+        map=CSSFormat.form(style);
+    }
+
+    public AnimCSS view(View v){
+        refV=new WeakReference<>(v);
+        return this;
+    }
+
+    public AnimCSS gone(){
+        refV.get().setVisibility(View.GONE);
+        return this;
+    }
+
+    public AnimCSS hide(){
+        refV.get().setVisibility(View.INVISIBLE);
+        return this;
+    }
+
+    public AnimCSS show(){
+        refV.get().setVisibility(View.VISIBLE);
+        return this;
+    }
+
     public static void open(){
         devMode=false;
     }
@@ -235,7 +259,7 @@ public class AnimCSS {
             animator.setInterpolator(interpolator(map.get("as")));
             list.add(animator);
         }
-        if(map.get("s")!=null){
+        if(map.get("s")!=null||map.get("sx")!=null||map.get("sy")!=null){
             float f=0f;
             float t=1f;
             if(map.get("sf")!=null){
@@ -244,12 +268,16 @@ public class AnimCSS {
             if(map.get("st")!=null){
                 t=Float.parseFloat(map.get("st"));
             }
-            ObjectAnimator animator1=ObjectAnimator.ofFloat(v,"scaleX",f,t);
-            ObjectAnimator animator2=ObjectAnimator.ofFloat(v,"scaleY",f,t);
-            animator1.setInterpolator(interpolator(map.get("ss")));
-            animator2.setInterpolator(interpolator(map.get("ss")));
-            list.add(animator1);
-            list.add(animator2);
+            if(map.get("sy")==null){
+                ObjectAnimator animator1=ObjectAnimator.ofFloat(v,"scaleX",f,t);
+                animator1.setInterpolator(interpolator(map.get("ss")));
+                list.add(animator1);
+            }
+            if(map.get("sx")==null){
+                ObjectAnimator animator2=ObjectAnimator.ofFloat(v,"scaleY",f,t);
+                animator2.setInterpolator(interpolator(map.get("ss")));
+                list.add(animator2);
+            }
         }
         set.playTogether(list);
         lastSet=set;

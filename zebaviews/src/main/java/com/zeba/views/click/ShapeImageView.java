@@ -79,6 +79,10 @@ public class ShapeImageView extends AppCompatImageView implements ViewSuperCallB
 
         paint2 = new Paint();
         paint2.setXfermode(null);
+
+        if(clickHelper.getShape().getShadow().size()!=0){
+            setLayerType(LAYER_TYPE_SOFTWARE,null);
+        }
     }
 
     public CShape getShape(){

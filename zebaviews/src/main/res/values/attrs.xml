@@ -128,6 +128,29 @@
         <attr name="shadow"/>
         <attr name="svg"/>
     </declare-styleable>
+    <declare-styleable name="SEditText">
+        <attr name="showType"/>
+        <attr name="alphaTo"/>
+        <attr name="alphaTime"/>
+        <attr name="scaleTo"/>
+        <attr name="scaleTime"/>
+        <attr name="strokeColor"/>
+        <attr name="pressedColor"/>
+        <attr name="defaultColor"/>
+        <attr name="strokeWidth"/>
+        <attr name="roundRadius"/>
+        <attr name="topLeftRadius"/>
+        <attr name="topRightRadius"/>
+        <attr name="bottomLeftRadius"/>
+        <attr name="bottomRightRadius"/>
+        <attr name="css"/>
+        <attr name="anim"/>
+        <attr name="gradientLine"/>
+        <attr name="gradientSweep"/>
+        <attr name="gradientCircle"/>
+        <attr name="shadow"/>
+        <attr name="svg"/>
+    </declare-styleable>
     <declare-styleable name="TextGradientView">
         <attr name="startColor" format="color"/>
         <attr name="endColor" format="color"/>

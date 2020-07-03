@@ -36,6 +36,9 @@ public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack{
         clickHelper.init();
         styleCSS =new StyleCSS(this,map.get("css"));
         animCSS =new AnimCSS(this,map.get("anim"));
+        if(clickHelper.getShape().getShadow().size()!=0){
+            setLayerType(LAYER_TYPE_SOFTWARE,null);
+        }
     }
 
     public CShape getShape(){

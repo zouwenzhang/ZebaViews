@@ -33,6 +33,7 @@ public class StyleCSS {
             v.setPadding(pp,pp,pp,pp);
         }else{
             int[] pd=new int[4];
+            pd[0]=v.getPaddingLeft();pd[1]=v.getPaddingTop();pd[2]=v.getPaddingRight();pd[3]=v.getPaddingBottom();
             boolean find=false;
             if(sMap.get("pl")!=null){
                 pd[0]=dp(v,"pl");
@@ -139,6 +140,13 @@ public class StyleCSS {
             v.setLayoutParams(v.getLayoutParams());
         }else{
             int[] ms=new int[4];
+            if(v.getLayoutParams() instanceof LinearLayout.LayoutParams){
+                LinearLayout.LayoutParams lp=(LinearLayout.LayoutParams)v.getLayoutParams();
+                ms[0]=lp.leftMargin;ms[1]=lp.topMargin;ms[2]=lp.rightMargin;ms[3]=lp.bottomMargin;
+            }else if(v.getLayoutParams() instanceof FrameLayout.LayoutParams){
+                FrameLayout.LayoutParams lp=(FrameLayout.LayoutParams)v.getLayoutParams();
+                ms[0]=lp.leftMargin;ms[1]=lp.topMargin;ms[2]=lp.rightMargin;ms[3]=lp.bottomMargin;
+            }
             boolean find=false;
             if(sMap.get("ml")!=null){
                 ms[0]=dp(v,"ml");

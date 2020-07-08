@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#ffffff"
     >
     <Button
         android:id="@+id/tv_button4"
@@ -18,21 +19,13 @@
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:css="si:15; g:l; pr:15;pt:10;pb:10;pl:15; r:50; sw:1; ml:15; mr:15;mt:10;"
-        app:anim="m:t;ms:s1;"
-        android:textColor="#343434"
-        android:text="12445"
-        app:strokeColor="#343434"
+
         />
     <com.zeba.views.SLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        app:defaultColor="#343434"
-        app:css="m:15;"
-        app:anim="m:b;sd:500;ms:s1;"/>
-    <com.zeba.views.click.ShapeImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_background"
-        android:padding="15dp"/>
+        android:layout_height="50dp"
+        app:defaultColor="#ffffff"
+        app:css="m:15;r:10;"
+        app:shadow="r:10;sr:5;x:5;y:5;c:#343434"/>
+
 </LinearLayout>

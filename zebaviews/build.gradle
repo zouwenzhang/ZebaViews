@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 27
@@ -27,3 +28,17 @@ dependencies {
     api 'com.android.support:appcompat-v7:27.1.1'
 
 }
+
+group = 'com.zwz.zeba'
+version = '1.0.1'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('http://maven.zeba.group:8020/archiva/repository/android-views/')) {
+                authentication(userName: 'admin', password: 'zwz123!@#')
+            }
+        }
+    }
+}
+

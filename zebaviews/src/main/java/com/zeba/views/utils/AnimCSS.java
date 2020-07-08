@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.View;
@@ -34,6 +36,10 @@ public class AnimCSS {
     private Runnable repeatRunnable;
     private Runnable pauseRunnable;
     private Runnable resumeRunnable;
+    private int startShowState=-1;
+    private int endShowState=-1;
+    private int vWidth;
+    private int vHeight;
 
     public AnimCSS(View v,String style){
         map=CSSFormat.form(style);
@@ -57,10 +63,95 @@ public class AnimCSS {
 
     public AnimCSS(String style){
         map=CSSFormat.form(style);
+        if(map.size()!=0){
+            if(map.get("d")==null){
+                map.put("d","300");
+            }
+        }
+    }
+
+    public AnimCSS(){
+
+    }
+
+    public AnimCSS style(String style){
+        map=CSSFormat.form(style);
+        if(map.size()!=0){
+            if(map.get("d")==null){
+                map.put("d","300");
+            }
+        }
+        return this;
     }
 
     public AnimCSS view(View v){
         refV=new WeakReference<>(v);
+        vWidth=v.getMeasuredWidth();
+        vHeight=v.getMeasuredHeight();
+        return this;
+    }
+
+    public AnimCSS postWH(final Runnable runnable){
+        refV.get().post(new Runnable() {
+            @Override
+            public void run() {
+                vWidth=refV.get().getMeasuredWidth();
+                vHeight=refV.get().getMeasuredHeight();
+                if(runnable!=null){
+                    runnable.run();
+                }
+            }
+        });
+        return this;
+    }
+
+    public AnimCSS postWHClose(){
+        postWHClose(null);
+        return this;
+    }
+
+    public AnimCSS postWHClose(final Runnable runnable){
+        refV.get().post(new Runnable() {
+            @Override
+            public void run() {
+                vWidth=refV.get().getMeasuredWidth();
+                vHeight=refV.get().getMeasuredHeight();
+                close();
+                if(runnable!=null){
+                    runnable.run();
+                }
+            }
+        });
+        return this;
+    }
+
+    public AnimCSS endGone(){
+        endShowState=View.GONE;
+        return this;
+    }
+
+    public AnimCSS endHide(){
+        endShowState=View.INVISIBLE;
+        return this;
+    }
+
+    public AnimCSS endShow(){
+        endShowState=View.VISIBLE;
+        return this;
+    }
+
+    public AnimCSS startGone(){
+        startShowState=View.GONE;
+        return this;
+    }
+
+    public AnimCSS startHide(){
+        startShowState=View.INVISIBLE;
+        return this;
+    }
+
+    public AnimCSS startShow(){
+        startShowState=View.VISIBLE;
         return this;
     }
 
@@ -71,6 +162,17 @@ public class AnimCSS {
 
     public AnimCSS hide(){
         refV.get().setVisibility(View.INVISIBLE);
+        return this;
+    }
+
+    public AnimCSS close(){
+        if(map.get("csy")!=null){
+            refV.get().getLayoutParams().height=0;
+        }
+        if(map.get("csx")!=null){
+            refV.get().getLayoutParams().width=0;
+        }
+        refV.get().requestLayout();
         return this;
     }
 
@@ -113,20 +215,29 @@ public class AnimCSS {
     }
 
     private Animator.AnimatorListener animatorListener=new Animator.AnimatorListener() {
+        @SuppressLint("WrongConstant")
         @Override
         public void onAnimationStart(Animator animator) {
             if(lastSet!=animator){
                 return;
             }
-            refV.get().setVisibility(View.VISIBLE);
+            if(startShowState!=-1){
+                refV.get().setVisibility(startShowState);
+            }else{
+                refV.get().setVisibility(View.VISIBLE);
+            }
             if(startRunnable!=null){
                 startRunnable.run();
             }
         }
+        @SuppressLint("WrongConstant")
         @Override
         public void onAnimationEnd(Animator animator) {
             if(lastSet!=animator){
                 return;
+            }
+            if(endShowState!=-1){
+                refV.get().setVisibility(endShowState);
             }
             if(endRunnable!=null){
                 endRunnable.run();
@@ -170,6 +281,24 @@ public class AnimCSS {
             if(resumeRunnable!=null){
                 resumeRunnable.run();
             }
+        }
+    };
+
+    private ValueAnimator.AnimatorUpdateListener updateXListener=new ValueAnimator.AnimatorUpdateListener() {
+        @Override
+        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            float a=(float)valueAnimator.getAnimatedValue();
+            refV.get().getLayoutParams().width=(int)(vWidth*a);
+            refV.get().requestLayout();
+        }
+    };
+
+    private ValueAnimator.AnimatorUpdateListener updateYListener=new ValueAnimator.AnimatorUpdateListener() {
+        @Override
+        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            float a=(float)valueAnimator.getAnimatedValue();
+            refV.get().getLayoutParams().height=(int)(vHeight*a);
+            refV.get().requestLayout();
         }
     };
 
@@ -271,11 +400,17 @@ public class AnimCSS {
             if(map.get("sy")==null){
                 ObjectAnimator animator1=ObjectAnimator.ofFloat(v,"scaleX",f,t);
                 animator1.setInterpolator(interpolator(map.get("ss")));
+                if(map.get("csx")!=null){
+                    animator1.addUpdateListener(updateXListener);
+                }
                 list.add(animator1);
             }
             if(map.get("sx")==null){
                 ObjectAnimator animator2=ObjectAnimator.ofFloat(v,"scaleY",f,t);
                 animator2.setInterpolator(interpolator(map.get("ss")));
+                if(map.get("csy")!=null){
+                    animator2.addUpdateListener(updateYListener);
+                }
                 list.add(animator2);
             }
         }
@@ -292,7 +427,7 @@ public class AnimCSS {
             @Override
             public void run() {
                 if(lastSet==null){
-                    return;
+                    create();
                 }
                 if(map.get("sd")==null){
                     lastSet.start();

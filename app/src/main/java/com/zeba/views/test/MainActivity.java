@@ -13,6 +13,7 @@ import com.zeba.views.utils.AnimCSS;
 public class MainActivity extends AppCompatActivity {
 
     private ShapeTextView tv1;
+    private AnimCSS animCSS;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +44,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                Toast.makeText(MainActivity.this,"click3",Toast.LENGTH_SHORT).show();
 //                startActivity(new Intent(MainActivity.this,WebActivity.class));
-                new GrabTopOutPriceDialog(MainActivity.this).show();
+//                new GrabTopOutPriceDialog(MainActivity.this).show();
+                animCSS.start();
             }
         });
         tv1=findViewById(R.id.tv_title);
-        tv1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                tv1.setText("adfsd123");
-            }
-        },200);
+        animCSS=new AnimCSS().view(tv1).style("sy:1;csy:1;").postWHClose(null);
+//        tv1.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                tv1.setText("adfsd123");
+//            }
+//        },200);
     }
 }

@@ -63,9 +63,4 @@ public class ShapeHelper {
         return dw;
     }
 
-    public static void te(){
-//        VectorDrawableCompat  compat=new VectorDrawableCompat.
-        VectorDrawable drawable;
-    }
-
 }

@@ -3,6 +3,7 @@ package com.zeba.views.click;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
@@ -37,6 +38,7 @@ public class ShapeLinearLayout extends LinearLayout implements ViewSuperCallBack
         styleCSS =new StyleCSS(this,map.get("css"));
         animCSS =new AnimCSS(this,map.get("anim"));
         if(clickHelper.getShape().getShadow().size()!=0){
+            Log.e("zwz","LAYER_TYPE_SOFTWARE");
             setLayerType(LAYER_TYPE_SOFTWARE,null);
         }
     }

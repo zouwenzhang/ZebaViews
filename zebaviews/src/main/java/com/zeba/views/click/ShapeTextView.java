@@ -3,6 +3,7 @@ package com.zeba.views.click;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.SpannableString;
@@ -15,6 +16,9 @@ import com.zeba.views.STextView;
 import com.zeba.views.drawables.SVGDrawable;
 import com.zeba.views.utils.AnimCSS;
 import com.zeba.views.utils.StyleCSS;
+import com.zeba.views.utils.TypeFaceManager;
+
+import java.util.Map;
 
 public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBack {
     private ViewClickHelper clickHelper;
@@ -42,7 +46,7 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
 
     private void init(Context context,AttributeSet attrs){
         clickHelper=new ViewClickHelper(this);
-        clickHelper.getShape().init(context,attrs);
+        Map<String,String> map= clickHelper.getShape().init(context,attrs);
         clickHelper.init();
         if(attrs==null){
             return;
@@ -52,11 +56,15 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
         loadingStrokeWidth=typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_loadingStrokeWidth,dp2px(2));
         loadingPadding=typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_loadingPadding,dp2px(10));
         loadingHint=typedArray.getString(R.styleable.ShapeTextView_loadingHint);
+        int loadingColor=typedArray.getColor(R.styleable.ShapeTextView_loadingColor,0);
         String style=typedArray.getString(R.styleable.ShapeTextView_css);
         String anim=typedArray.getString(R.styleable.ShapeTextView_anim);
         typedArray.recycle();
         loadingDrawable = new CircularProgressDrawable(getContext());
-        loadingDrawable.setColorSchemeColors(getTextColors().getDefaultColor());
+        if(loadingColor==0){
+            loadingColor=getPaint().getColor();
+        }
+        loadingDrawable.setColorSchemeColors(loadingColor);
         loadingDrawable.setStrokeWidth(loadingStrokeWidth);
         text=getText().toString();
         if(loadingHint==null||loadingHint.length()==0){
@@ -64,6 +72,7 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
         }
         styleCSS =new StyleCSS(this,style);
         animCSS =new AnimCSS(this,anim);
+        TypeFaceManager.initTypeFace(context,this,map);
         if(clickHelper.getShape().getSvg().size()!=0){
             svgDrawable=new SVGDrawable(context,clickHelper.getShape().getSvg());
         }
@@ -93,7 +102,7 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
     }
 
     public void showLoading(){
-        setText(loadingHint);
+        super.setText(loadingHint);
         int sx=(int)(getWidth()/2-getPaint().measureText(loadingHint)/2-loadingSize-loadingPadding);
         int sy=getHeight()/2- loadingSize /2;
         loadingDrawable.setBounds(sx,sy,sx+ loadingSize,sy+ loadingSize);
@@ -103,7 +112,7 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
 
     public void dismissLoading(){
         loadingDrawable.stop();
-        setText(text);
+        super.setText(text);
     }
 
     public boolean isLoading(){

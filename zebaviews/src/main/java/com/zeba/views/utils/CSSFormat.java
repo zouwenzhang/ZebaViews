@@ -30,4 +30,16 @@ public class CSSFormat {
         }
         return css;
     }
+
+    public static float[] toFloat2(String value){
+        float[] vss=new float[2];
+        String[] vs=value.split(",");
+        try{
+            vss[0]=Float.parseFloat(vs[0]);
+            vss[1]=Float.parseFloat(vs[1]);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return vss;
+    }
 }

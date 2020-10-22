@@ -20,6 +20,7 @@ import android.view.animation.OvershootInterpolator;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class AnimCSS {
 
     private static boolean devMode=true;
 
-    private Map<String,String> map;
+    private Map<String,String> map=new HashMap<>();
     private AnimatorSet lastSet;
     private WeakReference<View> refV;
     private Runnable startRunnable;
@@ -42,7 +43,7 @@ public class AnimCSS {
     private int vHeight;
 
     public AnimCSS(View v,String style){
-        map=CSSFormat.form(style);
+        map.putAll(CSSFormat.form(style));
         refV=new WeakReference<>(v);
         if(map.size()!=0){
             if(map.get("d")==null){
@@ -62,7 +63,7 @@ public class AnimCSS {
     }
 
     public AnimCSS(String style){
-        map=CSSFormat.form(style);
+        map.putAll(CSSFormat.form(style));
         if(map.size()!=0){
             if(map.get("d")==null){
                 map.put("d","300");
@@ -75,12 +76,17 @@ public class AnimCSS {
     }
 
     public AnimCSS style(String style){
-        map=CSSFormat.form(style);
+        map.putAll(CSSFormat.form(style));
         if(map.size()!=0){
             if(map.get("d")==null){
                 map.put("d","300");
             }
         }
+        return this;
+    }
+
+    public AnimCSS add(String key,String value){
+        map.put(key,value);
         return this;
     }
 
@@ -357,23 +363,32 @@ public class AnimCSS {
             mf=Float.parseFloat(map.get("mf"));
         }
         if(map.get("m")!=null){
+            ObjectAnimator animator=null;
             if("l".equals(map.get("m"))){
-                ObjectAnimator animator=ObjectAnimator.ofFloat(v,"translationX",mf==null?-vw:-mf*vw,0);
-                animator.setInterpolator(interpolator(map.get("ms")));
-                list.add(animator);
+                animator=ObjectAnimator.ofFloat(v,"translationX",mf==null?-vw:-mf*vw,0);
             }else if("r".equals(map.get("m"))){
-                ObjectAnimator animator=ObjectAnimator.ofFloat(v,"translationX",mf==null?vw:mf*vw,0);
-                animator.setInterpolator(interpolator(map.get("ms")));
-                list.add(animator);
+                animator=ObjectAnimator.ofFloat(v,"translationX",mf==null?vw:mf*vw,0);
             }else if("t".equals(map.get("m"))){
-                ObjectAnimator animator=ObjectAnimator.ofFloat(v,"translationY",mf==null?-vh:-mf*vh,0);
-                animator.setInterpolator(interpolator(map.get("ms")));
-                list.add(animator);
+                animator=ObjectAnimator.ofFloat(v,"translationY",mf==null?-vh:-mf*vh,0);
             }else if("b".equals(map.get("m"))){
-                ObjectAnimator animator=ObjectAnimator.ofFloat(v,"translationY",mf==null?vh:mf*vh,0);
+                animator=ObjectAnimator.ofFloat(v,"translationY",mf==null?vh:mf*vh,0);
+            }
+            if(animator!=null){
                 animator.setInterpolator(interpolator(map.get("ms")));
                 list.add(animator);
             }
+        }else if(map.get("mx")!=null){
+            String vs=map.get("mx");
+            float[] vss=CSSFormat.toFloat2(vs);
+            ObjectAnimator animator=ObjectAnimator.ofFloat(v,"translationX",vss[0],vss[1]);
+            animator.setInterpolator(interpolator(map.get("ms")));
+            list.add(animator);
+        }else if(map.get("my")!=null){
+            String vs=map.get("my");
+            float[] vss=CSSFormat.toFloat2(vs);
+            ObjectAnimator animator=ObjectAnimator.ofFloat(v,"translationY",vss[0],vss[1]);
+            animator.setInterpolator(interpolator(map.get("ms")));
+            list.add(animator);
         }
         if(map.get("a")!=null){
             float f=0f;

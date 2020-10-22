@@ -26,17 +26,19 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api 'com.android.support:appcompat-v7:27.1.1'
-
+    api 'org.zeba:android-objproxy:1.0.9'
 }
-
-group = 'com.zwz.zeba'
-version = '1.0.1'
 
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: uri('http://maven.zeba.group:8020/archiva/repository/android-views/')) {
+            repository(url: uri('http://maven.zeba.group:8020/archiva/repository/internal/')) {
                 authentication(userName: 'admin', password: 'zwz123!@#')
+            }
+            pom.project{
+                groupId = "org.zeba"// 唯一标识（通常为模块包名，也可以任意）
+                artifactId = "android-views" // 项目名称（通常为类库模块名称，也可以任意）
+                version = "1.4.2" // 版本号
             }
         }
     }

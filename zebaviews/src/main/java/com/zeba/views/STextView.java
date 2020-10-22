@@ -4,8 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.zeba.views.click.ShapeTextView;
+import com.zeba.views.utils.ViewDataBinder;
+
+import org.zeba.obj.proxy.ProxyFunc;
 
 public class STextView extends ShapeTextView {
+
+    private ViewDataBinder dataBinder=new ViewDataBinder(this);
 
     public STextView(Context context) {
         this(context,null);
@@ -19,4 +24,21 @@ public class STextView extends ShapeTextView {
         super(context, attrs, defStyleAttr);
     }
 
+    public void bindData(Object obj,String name){
+        dataBinder.bind(obj,name);
+    }
+
+    public <T> void bindData(Object obj,String name,ProxyFunc<T> func){
+        dataBinder.bindData(obj,name,func);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        dataBinder.onDestroy();
+    }
+
+    public String getFieldName(){
+        return getShape().getAttr().get("fieldName");
+    }
 }

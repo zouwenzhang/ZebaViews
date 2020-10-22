@@ -26,6 +26,7 @@ public class CShape {
     private Map<String,String> circle;
     private Map<String,String> shadow;
     private Map<String,String> svg;
+    private Map<String,String> attrMap=new HashMap<>();
 
     private int showType;
     private float scaleTo;
@@ -60,14 +61,13 @@ public class CShape {
     }
 
     public Map<String,String> init(Context context, AttributeSet attrs){
-        Map<String,String> map=new HashMap<>();
         if(attrs==null){
             line=new HashMap<>();
             sweep=new HashMap<>();
             circle=new HashMap<>();
             shadow=new HashMap<>();
             svg=new HashMap<>();
-            return map;
+            return attrMap;
         }
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShapeTextView);
         pressedColor = typedArray.getColor(R.styleable.ShapeTextView_pressedColor, 0);
@@ -81,9 +81,11 @@ public class CShape {
         bottomRightRadius = typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_bottomRightRadius, 0);
         String type=typedArray.getString(R.styleable.ShapeTextView_showType);
         String style=typedArray.getString(R.styleable.ShapeTextView_css);
-        map.put("css",style);
+        attrMap.put("css",style);
         String anim=typedArray.getString(R.styleable.ShapeTextView_anim);
-        map.put("anim",anim);
+        attrMap.put("anim",anim);
+        String ttf=typedArray.getString(R.styleable.ShapeTextView_ttf);
+        attrMap.put("ttf",ttf);
         String lines=typedArray.getString(R.styleable.ShapeTextView_gradientLine);
         line= CSSFormat.form(lines);
         String sweeps=typedArray.getString(R.styleable.ShapeTextView_gradientSweep);
@@ -94,6 +96,10 @@ public class CShape {
         shadow=CSSFormat.form(shadows);
         String svgs=typedArray.getString(R.styleable.ShapeTextView_svg);
         svg=CSSFormat.form(svgs);
+        String fieldName=typedArray.getString(R.styleable.ShapeTextView_fieldName);
+        if(fieldName!=null&&!"".equals(fieldName)){
+            attrMap.put("fieldName",fieldName);
+        }
         initShowType(type);
 //        showType= typedArray.getInteger(R.styleable.ShapeTextView_showType,0);
         scaleTo=typedArray.getFloat(R.styleable.ShapeTextView_scaleTo,0.95f);
@@ -101,7 +107,7 @@ public class CShape {
         alphaTo=typedArray.getFloat(R.styleable.ShapeTextView_alphaTo,0.7f);
         alphaTime=typedArray.getInteger(R.styleable.ShapeTextView_alphaTime,200);
         typedArray.recycle();
-        return map;
+        return attrMap;
     }
 
     private void initShowType(String type){
@@ -335,5 +341,9 @@ public class CShape {
 
     public void setSvg(Map<String, String> svg) {
         this.svg = svg;
+    }
+
+    public Map<String,String> getAttr(){
+        return attrMap;
     }
 }

@@ -31,6 +31,18 @@
     <attr name="gradientCircle" format="string"/>
     <attr name="shadow" format="string"/>
     <attr name="svg" format="string"/>
+    <attr name="selectIcon" format="reference"/>
+    <attr name="unSelectIcon" format="reference"/>
+    <attr name="iconPadding" format="dimension"/>
+    <attr name="groupId" format="string"/>
+    <attr name="selectTextColor" format="color"/>
+    <attr name="unSelectTextColor" format="color"/>
+    <attr name="tabId" format="string"/>
+    <attr name="iconWidth" format="dimension"/>
+    <attr name="iconHeight" format="dimension"/>
+    <attr name="ttf" format="string"/>
+    <attr name="loadingColor" format="color"/>
+    <attr name="fieldName" format="string"/>
 
     <declare-styleable name="ShapeTextView">
         <attr name="showType"/>
@@ -51,6 +63,7 @@
         <attr name="loadingStrokeWidth"/>
         <attr name="loadingHint"/>
         <attr name="loadingPadding"/>
+        <attr name="loadingColor"/>
         <attr name="css"/>
         <attr name="anim"/>
         <attr name="gradientLine"/>
@@ -58,6 +71,8 @@
         <attr name="gradientCircle"/>
         <attr name="shadow"/>
         <attr name="svg"/>
+        <attr name="ttf"/>
+        <attr name="fieldName"/>
     </declare-styleable>
     <declare-styleable name="ShapeLinearLayout">
         <attr name="showType"/>
@@ -150,6 +165,8 @@
         <attr name="gradientCircle"/>
         <attr name="shadow"/>
         <attr name="svg"/>
+        <attr name="ttf"/>
+        <attr name="fieldName"/>
     </declare-styleable>
     <declare-styleable name="TextGradientView">
         <attr name="startColor" format="color"/>
@@ -171,5 +188,27 @@
             <enum name="circle" value="0" />
             <enum name="round" value="1" />
         </attr>
+    </declare-styleable>
+    <declare-styleable name="CheckView">
+        <attr name="selectIcon" />
+        <attr name="unSelectIcon"/>
+        <attr name="android:textSize"/>
+        <attr name="android:textColor"/>
+        <attr name="android:text"/>
+        <attr name="iconPadding"/>
+        <attr name="groupId"/>
+    </declare-styleable>
+    <declare-styleable name="TabView">
+        <attr name="selectIcon" />
+        <attr name="unSelectIcon"/>
+        <attr name="android:textSize"/>
+        <attr name="selectTextColor"/>
+        <attr name="unSelectTextColor"/>
+        <attr name="android:text"/>
+        <attr name="iconPadding"/>
+        <attr name="groupId"/>
+        <attr name="tabId"/>
+        <attr name="iconWidth"/>
+        <attr name="iconHeight"/>
     </declare-styleable>
 </resources>

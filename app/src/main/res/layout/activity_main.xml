@@ -27,5 +27,23 @@
         app:defaultColor="#ffffff"
         app:css="m:15;r:10;"
         app:shadow="r:10;sr:5;x:5;y:5;c:#343434"/>
-
+    <com.zeba.views.SEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#343434"
+        android:textSize="15sp"
+        app:css="p:10;"
+        android:hint="123456"
+        app:defaultColor="#ffffff"
+        />
+    <com.zeba.views.CheckView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:selectIcon="@drawable/lgoin_agreen_icon"
+        app:unSelectIcon="@drawable/login_unagreen_icon"
+        app:iconPadding="10dp"
+        android:textSize="14sp"
+        android:textColor="#343434"
+        android:text="123456"
+        app:css="p:15;"/>
 </LinearLayout>

@@ -43,6 +43,17 @@
     <attr name="ttf" format="string"/>
     <attr name="loadingColor" format="color"/>
     <attr name="fieldName" format="string"/>
+    <attr name="bg" format="string"/>
+    <attr name="img" format="string"/>
+    <attr name="imgLeft" format="string"/>
+    <attr name="imgRight" format="string"/>
+    <attr name="imgTop" format="string"/>
+    <attr name="imgBottom" format="string"/>
+    <attr name="direction" format="enum">
+        <enum name="row" value="0" />
+        <enum name="column" value="1" />
+    </attr>
+    <attr name="schemeColors" format="string"/>
 
     <declare-styleable name="ShapeTextView">
         <attr name="showType"/>
@@ -73,6 +84,7 @@
         <attr name="svg"/>
         <attr name="ttf"/>
         <attr name="fieldName"/>
+        <attr name="bg"/>
     </declare-styleable>
     <declare-styleable name="ShapeLinearLayout">
         <attr name="showType"/>
@@ -96,6 +108,7 @@
         <attr name="gradientCircle"/>
         <attr name="shadow"/>
         <attr name="svg"/>
+        <attr name="bg"/>
     </declare-styleable>
     <declare-styleable name="ShapeFrameLayout">
         <attr name="showType"/>
@@ -119,6 +132,7 @@
         <attr name="gradientCircle"/>
         <attr name="shadow"/>
         <attr name="svg"/>
+        <attr name="bg"/>
     </declare-styleable>
     <declare-styleable name="ShapeImageView">
         <attr name="showType"/>
@@ -142,6 +156,8 @@
         <attr name="gradientCircle"/>
         <attr name="shadow"/>
         <attr name="svg"/>
+        <attr name="bg"/>
+        <attr name="img"/>
     </declare-styleable>
     <declare-styleable name="SEditText">
         <attr name="showType"/>
@@ -167,6 +183,7 @@
         <attr name="svg"/>
         <attr name="ttf"/>
         <attr name="fieldName"/>
+        <attr name="bg"/>
     </declare-styleable>
     <declare-styleable name="TextGradientView">
         <attr name="startColor" format="color"/>
@@ -210,5 +227,35 @@
         <attr name="tabId"/>
         <attr name="iconWidth"/>
         <attr name="iconHeight"/>
+    </declare-styleable>
+    <declare-styleable name="SFlexLayout">
+        <attr name="showType"/>
+        <attr name="alphaTo"/>
+        <attr name="alphaTime"/>
+        <attr name="scaleTo"/>
+        <attr name="scaleTime"/>
+        <attr name="strokeColor"/>
+        <attr name="pressedColor"/>
+        <attr name="defaultColor"/>
+        <attr name="strokeWidth"/>
+        <attr name="roundRadius"/>
+        <attr name="topLeftRadius"/>
+        <attr name="topRightRadius"/>
+        <attr name="bottomLeftRadius"/>
+        <attr name="bottomRightRadius"/>
+        <attr name="css"/>
+        <attr name="anim"/>
+        <attr name="gradientLine"/>
+        <attr name="gradientSweep"/>
+        <attr name="gradientCircle"/>
+        <attr name="shadow"/>
+        <attr name="svg"/>
+        <attr name="bg"/>
+    </declare-styleable>
+    <declare-styleable name="SListView">
+        <attr name="direction"/>
+    </declare-styleable>
+    <declare-styleable name="SRefreshLayout">
+        <attr name="schemeColors"/>
     </declare-styleable>
 </resources>

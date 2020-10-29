@@ -12,13 +12,14 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.zeba.views.attr.SAttr;
 import com.zeba.views.click.CShape;
 import com.zeba.views.click.ViewClickHelper;
 import com.zeba.views.interfaces.TextChangeListener;
-import com.zeba.views.utils.AnimCSS;
-import com.zeba.views.utils.StyleCSS;
-import com.zeba.views.utils.TypeFaceManager;
-import com.zeba.views.utils.ViewDataBinder;
+import com.zeba.views.css.AnimCSS;
+import com.zeba.views.css.StyleCSS;
+import com.zeba.views.css.TypeFaceManager;
+import com.zeba.views.databind.ViewDataBinder;
 
 import org.zeba.obj.proxy.ProxyFunc;
 
@@ -31,6 +32,7 @@ public class SEditText extends AppCompatEditText implements TextWatcher {
     private AnimCSS animCSS;
     private View clearView;
     private ViewDataBinder dataBinder=new ViewDataBinder(this);
+    private SAttr sAttr;
 
     public SEditText(Context context) {
         super(context);
@@ -50,6 +52,7 @@ public class SEditText extends AppCompatEditText implements TextWatcher {
     private TextChangeListener textChangeListener;
 
     private void init(Context context,AttributeSet attrs){
+        sAttr=new SAttr(context,attrs);
         setBackground(null);
         clickHelper=new ViewClickHelper(this);
         Map<String,String> map= clickHelper.getShape().init(context,attrs);
@@ -145,7 +148,7 @@ public class SEditText extends AppCompatEditText implements TextWatcher {
     }
 
     public String getFieldName(){
-        return getShape().getAttr().get("fieldName");
+        return sAttr.getFieldName();
     }
 
     public void setSearchClickListener(final SearchClickListener listener){
@@ -207,5 +210,9 @@ public class SEditText extends AppCompatEditText implements TextWatcher {
 
     public interface SearchClickListener{
         void onSearchClick(String text);
+    }
+
+    public SAttr getSAttr(){
+        return sAttr;
     }
 }

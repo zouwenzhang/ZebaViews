@@ -3,7 +3,6 @@ package com.zeba.views.click;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Typeface;
 import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.SpannableString;
@@ -12,11 +11,10 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 
 import com.zeba.views.R;
-import com.zeba.views.STextView;
 import com.zeba.views.drawables.SVGDrawable;
-import com.zeba.views.utils.AnimCSS;
-import com.zeba.views.utils.StyleCSS;
-import com.zeba.views.utils.TypeFaceManager;
+import com.zeba.views.css.AnimCSS;
+import com.zeba.views.css.StyleCSS;
+import com.zeba.views.css.TypeFaceManager;
 
 import java.util.Map;
 
@@ -48,20 +46,22 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
         clickHelper=new ViewClickHelper(this);
         Map<String,String> map= clickHelper.getShape().init(context,attrs);
         clickHelper.init();
-        if(attrs==null){
-            return;
+        int loadingColor=-1;
+        if(attrs!=null){
+            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShapeTextView);
+            loadingSize =typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_loadingSize,0);
+            loadingStrokeWidth=typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_loadingStrokeWidth,dp2px(2));
+            loadingPadding=typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_loadingPadding,dp2px(10));
+            loadingHint=typedArray.getString(R.styleable.ShapeTextView_loadingHint);
+            loadingColor=typedArray.getColor(R.styleable.ShapeTextView_loadingColor,-1);
+            String style=typedArray.getString(R.styleable.ShapeTextView_css);
+            String anim=typedArray.getString(R.styleable.ShapeTextView_anim);
+            typedArray.recycle();
+            styleCSS =new StyleCSS(this,style);
+            animCSS =new AnimCSS(this,anim);
         }
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShapeTextView);
-        loadingSize =typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_loadingSize,0);
-        loadingStrokeWidth=typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_loadingStrokeWidth,dp2px(2));
-        loadingPadding=typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_loadingPadding,dp2px(10));
-        loadingHint=typedArray.getString(R.styleable.ShapeTextView_loadingHint);
-        int loadingColor=typedArray.getColor(R.styleable.ShapeTextView_loadingColor,0);
-        String style=typedArray.getString(R.styleable.ShapeTextView_css);
-        String anim=typedArray.getString(R.styleable.ShapeTextView_anim);
-        typedArray.recycle();
         loadingDrawable = new CircularProgressDrawable(getContext());
-        if(loadingColor==0){
+        if(loadingColor==-1){
             loadingColor=getPaint().getColor();
         }
         loadingDrawable.setColorSchemeColors(loadingColor);
@@ -70,8 +70,6 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
         if(loadingHint==null||loadingHint.length()==0){
             loadingHint=text;
         }
-        styleCSS =new StyleCSS(this,style);
-        animCSS =new AnimCSS(this,anim);
         TypeFaceManager.initTypeFace(context,this,map);
         if(clickHelper.getShape().getSvg().size()!=0){
             svgDrawable=new SVGDrawable(context,clickHelper.getShape().getSvg());

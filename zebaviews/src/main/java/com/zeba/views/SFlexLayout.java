@@ -7,11 +7,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.google.android.flexbox.FlexboxLayout;
+import com.zeba.views.attr.SAttr;
 import com.zeba.views.click.CShape;
 import com.zeba.views.click.ViewClickHelper;
 import com.zeba.views.click.ViewSuperCallBack;
-import com.zeba.views.utils.AnimCSS;
-import com.zeba.views.utils.StyleCSS;
+import com.zeba.views.css.AnimCSS;
+import com.zeba.views.css.StyleCSS;
 
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack{
     private ViewClickHelper clickHelper;
     private StyleCSS styleCSS;
     private AnimCSS animCSS;
+    private SAttr sAttr;
 
     public SFlexLayout(Context context) {
         super(context);
@@ -37,6 +39,7 @@ public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack{
     }
 
     private void init(Context context,AttributeSet attrs){
+        sAttr=new SAttr(context,attrs);
         clickHelper=new ViewClickHelper(this);
         Map<String,String> map= clickHelper.getShape().init(context,attrs);
         clickHelper.init();
@@ -46,6 +49,10 @@ public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack{
             Log.e("zwz","LAYER_TYPE_SOFTWARE");
             setLayerType(LAYER_TYPE_SOFTWARE,null);
         }
+    }
+
+    public SAttr getSAttr(){
+        return sAttr;
     }
 
     public CShape getShape(){

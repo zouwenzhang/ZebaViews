@@ -1,4 +1,4 @@
-package com.zeba.views.utils;
+package com.zeba.views.databind;
 
 import android.widget.TextView;
 
@@ -31,9 +31,6 @@ public class ViewDataBinder {
                 }else{
                     textView.setText(oldValue.toString());
                 }
-            }else{
-                System.out.println("oldValue.equals(v)");
-                System.out.println("oldValue="+String.valueOf(oldValue)+",newValue="+String.valueOf(newValue));
             }
         }catch (Exception e){
            e.printStackTrace();

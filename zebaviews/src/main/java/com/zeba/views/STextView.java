@@ -3,12 +3,15 @@ package com.zeba.views;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.zeba.views.attr.SAttr;
 import com.zeba.views.click.ShapeTextView;
-import com.zeba.views.utils.ViewDataBinder;
+import com.zeba.views.databind.ViewDataBinder;
 
 import org.zeba.obj.proxy.ProxyFunc;
 
 public class STextView extends ShapeTextView {
+
+    private SAttr sAttr;
 
     private ViewDataBinder dataBinder=new ViewDataBinder(this);
 
@@ -22,6 +25,7 @@ public class STextView extends ShapeTextView {
 
     public STextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        sAttr=new SAttr(context,attrs);
     }
 
     public void bindData(Object obj,String name){
@@ -39,6 +43,10 @@ public class STextView extends ShapeTextView {
     }
 
     public String getFieldName(){
-        return getShape().getAttr().get("fieldName");
+        return sAttr.getFieldName();
+    }
+
+    public SAttr getSAttr(){
+        return sAttr;
     }
 }

@@ -85,6 +85,11 @@
         <attr name="ttf"/>
         <attr name="fieldName"/>
         <attr name="bg"/>
+        <attr name="img"/>
+        <attr name="imgLeft"/>
+        <attr name="imgTop"/>
+        <attr name="imgRight"/>
+        <attr name="imgBottom"/>
     </declare-styleable>
     <declare-styleable name="ShapeLinearLayout">
         <attr name="showType"/>
@@ -184,6 +189,10 @@
         <attr name="ttf"/>
         <attr name="fieldName"/>
         <attr name="bg"/>
+        <attr name="imgLeft"/>
+        <attr name="imgTop"/>
+        <attr name="imgRight"/>
+        <attr name="imgBottom"/>
     </declare-styleable>
     <declare-styleable name="TextGradientView">
         <attr name="startColor" format="color"/>

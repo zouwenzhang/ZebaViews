@@ -15,8 +15,8 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 
 import com.zeba.views.drawables.SVGDrawable;
-import com.zeba.views.utils.AnimCSS;
-import com.zeba.views.utils.StyleCSS;
+import com.zeba.views.css.AnimCSS;
+import com.zeba.views.css.StyleCSS;
 
 import java.util.Map;
 

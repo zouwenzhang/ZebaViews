@@ -1,4 +1,4 @@
-package com.zeba.views.utils;
+package com.zeba.views.databind;
 
 import com.zeba.views.SEditText;
 import com.zeba.views.STextView;
@@ -8,8 +8,32 @@ import org.zeba.obj.proxy.ProxyFunc;
 import java.lang.reflect.Field;
 
 public class DataBinder {
+    private Object hostObj;
     private Object dataObj;
     private Object proxyObj;
+
+    public DataBinder(Object host,Object obj){
+        this.dataObj =obj;
+        this.hostObj =host;
+        bind(new ProxyFunc<DataBinder>() {
+            @Override
+            public void onResult(DataBinder dataBinder) {
+                try{
+                    Field[] fields= hostObj.getClass().getDeclaredFields();
+                    for(Field f:fields){
+                        if(f.getType()==dataObj.getClass()){
+                            if(f.get(hostObj)==dataObj){
+                                f.set(hostObj,proxyObj);
+                                break;
+                            }
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public DataBinder(Object obj){
         this.dataObj =obj;

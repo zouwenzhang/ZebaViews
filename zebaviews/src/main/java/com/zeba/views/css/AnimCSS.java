@@ -1,4 +1,4 @@
-package com.zeba.views.utils;
+package com.zeba.views.css;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;

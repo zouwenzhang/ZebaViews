@@ -6,8 +6,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
-import com.zeba.views.utils.AnimCSS;
-import com.zeba.views.utils.StyleCSS;
+import com.zeba.views.css.AnimCSS;
+import com.zeba.views.css.StyleCSS;
 
 import java.util.Map;
 

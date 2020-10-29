@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.zeba.views.utils.AnimCSS;
+import com.zeba.views.css.AnimCSS;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import com.zeba.views.R;
-import com.zeba.views.utils.CSSFormat;
+import com.zeba.views.css.CSSFormat;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;

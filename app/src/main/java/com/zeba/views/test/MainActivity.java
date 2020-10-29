@@ -1,14 +1,11 @@
 package com.zeba.views.test;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.zeba.views.click.ShapeTextView;
-import com.zeba.views.utils.AnimCSS;
+import com.zeba.views.css.AnimCSS;
 
 public class MainActivity extends AppCompatActivity {
 

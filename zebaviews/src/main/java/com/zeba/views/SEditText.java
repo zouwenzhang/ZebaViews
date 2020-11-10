@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.zeba.views.attr.SAttr;
 import com.zeba.views.click.CShape;
 import com.zeba.views.click.ViewClickHelper;
+import com.zeba.views.databind.ResBinder;
+import com.zeba.views.interfaces.SViewer;
 import com.zeba.views.interfaces.TextChangeListener;
 import com.zeba.views.css.AnimCSS;
 import com.zeba.views.css.StyleCSS;
@@ -25,7 +27,7 @@ import org.zeba.obj.proxy.ProxyFunc;
 
 import java.util.Map;
 
-public class SEditText extends AppCompatEditText implements TextWatcher {
+public class SEditText extends AppCompatEditText implements TextWatcher,SViewer {
 
     private ViewClickHelper clickHelper;
     private StyleCSS styleCSS;
@@ -33,6 +35,7 @@ public class SEditText extends AppCompatEditText implements TextWatcher {
     private View clearView;
     private ViewDataBinder dataBinder=new ViewDataBinder(this);
     private SAttr sAttr;
+    private ResBinder resBinder;
 
     public SEditText(Context context) {
         super(context);
@@ -64,6 +67,7 @@ public class SEditText extends AppCompatEditText implements TextWatcher {
             setLayerType(LAYER_TYPE_SOFTWARE,null);
         }
         addTextChangedListener(this);
+        resBinder=new ResBinder(this,sAttr);
     }
 
     public CShape getShape(){
@@ -72,6 +76,11 @@ public class SEditText extends AppCompatEditText implements TextWatcher {
 
     public void setShapeDrawable(){
         clickHelper.setDrawable();
+    }
+
+    @Override
+    public ResBinder getResBinder(){
+        return resBinder;
     }
 
     @Override
@@ -91,6 +100,12 @@ public class SEditText extends AppCompatEditText implements TextWatcher {
                 animCSS.init();
             }
         });
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        resBinder.clear();
     }
 
     public void animStart(){

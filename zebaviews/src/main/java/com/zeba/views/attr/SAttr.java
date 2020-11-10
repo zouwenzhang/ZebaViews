@@ -74,6 +74,10 @@ public class SAttr {
         attrMap.put("imgTop",typedArray.getString(R.styleable.ShapeTextView_imgTop));
         attrMap.put("imgRight",typedArray.getString(R.styleable.ShapeTextView_imgRight));
         attrMap.put("imgBottom",typedArray.getString(R.styleable.ShapeTextView_imgBottom));
+        attrMap.put("pageName",typedArray.getString(R.styleable.ShapeTextView_pageName));
+        attrMap.put("pageCode",typedArray.getString(R.styleable.ShapeTextView_pageCode));
+        attrMap.put("pageText",typedArray.getString(R.styleable.ShapeTextView_pageText));
+        attrMap.put("pageHint",typedArray.getString(R.styleable.ShapeTextView_pageHint));
         initShowType(type);
         scaleTo=typedArray.getFloat(R.styleable.ShapeTextView_scaleTo,0.95f);
         scaleTime=typedArray.getInteger(R.styleable.ShapeTextView_scaleTime,100);
@@ -120,5 +124,18 @@ public class SAttr {
 
     public String getFieldName(){
         return attrMap.get("fieldName");
+    }
+
+    public String getPageName(){
+        return attrMap.get("pageName");
+    }
+    public String getPageCode(){
+        return attrMap.get("pageCode");
+    }
+    public String getPageText(){
+        return attrMap.get("pageText");
+    }
+    public String getPageHint(){
+        return attrMap.get("pageHint");
     }
 }

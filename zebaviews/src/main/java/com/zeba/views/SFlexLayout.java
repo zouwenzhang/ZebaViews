@@ -13,15 +13,18 @@ import com.zeba.views.click.ViewClickHelper;
 import com.zeba.views.click.ViewSuperCallBack;
 import com.zeba.views.css.AnimCSS;
 import com.zeba.views.css.StyleCSS;
+import com.zeba.views.databind.ResBinder;
+import com.zeba.views.interfaces.SViewer;
 
 import java.util.Map;
 
-public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack{
+public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack, SViewer {
 
     private ViewClickHelper clickHelper;
     private StyleCSS styleCSS;
     private AnimCSS animCSS;
     private SAttr sAttr;
+    private ResBinder resBinder;
 
     public SFlexLayout(Context context) {
         super(context);
@@ -46,9 +49,10 @@ public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack{
         styleCSS =new StyleCSS(this,map.get("css"));
         animCSS =new AnimCSS(this,map.get("anim"));
         if(clickHelper.getShape().getShadow().size()!=0){
-            Log.e("zwz","LAYER_TYPE_SOFTWARE");
+//            Log.e("zwz","LAYER_TYPE_SOFTWARE");
             setLayerType(LAYER_TYPE_SOFTWARE,null);
         }
+        resBinder=new ResBinder(this,sAttr);
     }
 
     public SAttr getSAttr(){
@@ -61,6 +65,11 @@ public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack{
 
     public void setShapeDrawable(){
         clickHelper.setDrawable();
+    }
+
+    @Override
+    public ResBinder getResBinder(){
+        return resBinder;
     }
 
     @Override
@@ -79,6 +88,12 @@ public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack{
                 animCSS.init();
             }
         });
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        resBinder.clear();
     }
 
     public void animStart(){

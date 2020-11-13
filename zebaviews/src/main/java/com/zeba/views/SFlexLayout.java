@@ -3,28 +3,23 @@ package com.zeba.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.google.android.flexbox.FlexboxLayout;
 import com.zeba.views.attr.SAttr;
-import com.zeba.views.click.CShape;
 import com.zeba.views.click.ViewClickHelper;
 import com.zeba.views.click.ViewSuperCallBack;
 import com.zeba.views.css.AnimCSS;
 import com.zeba.views.css.StyleCSS;
-import com.zeba.views.databind.ResBinder;
 import com.zeba.views.interfaces.SViewer;
 
-import java.util.Map;
 
 public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack, SViewer {
 
     private ViewClickHelper clickHelper;
-    private StyleCSS styleCSS;
-    private AnimCSS animCSS;
+    private StyleCSS styleCSS=new StyleCSS();
+    private AnimCSS animCSS=new AnimCSS();
     private SAttr sAttr;
-    private ResBinder resBinder;
 
     public SFlexLayout(Context context) {
         super(context);
@@ -44,32 +39,25 @@ public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack, SVi
     private void init(Context context,AttributeSet attrs){
         sAttr=new SAttr(context,attrs);
         clickHelper=new ViewClickHelper(this);
-        Map<String,String> map= clickHelper.getShape().init(context,attrs);
-        clickHelper.init();
-        styleCSS =new StyleCSS(this,map.get("css"));
-        animCSS =new AnimCSS(this,map.get("anim"));
-        if(clickHelper.getShape().getShadow().size()!=0){
-//            Log.e("zwz","LAYER_TYPE_SOFTWARE");
+        reloadAttr(context);
+    }
+
+    @Override
+    public void reloadAttr(Context context) {
+        styleCSS.setCSS(this,sAttr);
+        animCSS.setCSS(this,sAttr.anim);
+        if(sAttr.shadow.size()!=0){
             setLayerType(LAYER_TYPE_SOFTWARE,null);
         }
-        resBinder=new ResBinder(this,sAttr);
+        setShapeDrawable();
     }
 
     public SAttr getSAttr(){
         return sAttr;
     }
 
-    public CShape getShape(){
-        return clickHelper.getShape();
-    }
-
     public void setShapeDrawable(){
-        clickHelper.setDrawable();
-    }
-
-    @Override
-    public ResBinder getResBinder(){
-        return resBinder;
+        clickHelper.setDrawable(sAttr);
     }
 
     @Override
@@ -93,7 +81,6 @@ public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack, SVi
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        resBinder.clear();
     }
 
     public void animStart(){
@@ -101,7 +88,7 @@ public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack, SVi
     }
 
     public AnimCSS anim(String css){
-        animCSS=new AnimCSS(this,css);
+        animCSS.setCSS(this,css);
         return animCSS;
     }
 
@@ -145,4 +132,5 @@ public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack, SVi
     public boolean superOnTouchEvent(MotionEvent event) {
         return super.onTouchEvent(event);
     }
+
 }

@@ -6,6 +6,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
+import com.zeba.views.attr.SAttr;
+
 import java.lang.ref.WeakReference;
 
 public class ViewClickHelper {
@@ -14,7 +16,7 @@ public class ViewClickHelper {
     private ViewClickRipple2Helper ripple2Helper;
     private WeakReference<View> wrView;
     private ViewSuperCallBack superCallBack;
-    private CShape shapeInfo;
+    private SAttr attr;
     private int minMoveDistance;
     private float mStartX;
     private float mStartY;
@@ -25,58 +27,44 @@ public class ViewClickHelper {
         if(v!=null&&v instanceof ViewSuperCallBack){
             superCallBack=(ViewSuperCallBack) v;
         }
-        shapeInfo=new CShape(this);
         minMoveDistance= ViewConfiguration.get(v.getContext()).getScaledTouchSlop();
     }
 
-    public void init(){
+    public void setDrawable(SAttr attr){
         if(wrView==null||wrView.get()==null){
             return;
         }
-        View v=wrView.get();
-        Drawable drawable=v.getBackground();
-        if(drawable==null||shapeInfo.getDefaultColor()!=0){
-            drawable=ShapeHelper.getShapeDrawable(shapeInfo);
-            v.setBackground(drawable);
-        }
-        setDrawable(drawable);
-    }
-
-    public CShape getShape(){
-        return shapeInfo;
-    }
-
-    public void setDrawable(){
-        if(wrView==null||wrView.get()==null){
+        if(attr.defaultColor==0&&attr.strokeColor==0&&attr.roundRadius==0){
             return;
         }
-        Drawable drawable=ShapeHelper.getShapeDrawable(shapeInfo);
-        if(shapeInfo.getShowType()==0){
+        this.attr=attr;
+        Drawable drawable=ShapeHelper.getShapeDrawable(attr);
+        if(attr.showType==0){
             wrView.get().setBackground(drawable);
         }else{
-            setDrawable(drawable);
+            setDrawable(drawable,attr);
         }
     }
 
-    private void setDrawable(Drawable drawable){
+    private void setDrawable(Drawable drawable,SAttr attr){
         if(wrView==null||wrView.get()==null){
             return;
         }
         View view=wrView.get();
-        if(shapeInfo.getShowType()==1){
+        if(attr.showType==1){
             view.setBackground(drawable);
-            scaleHelper=new ViewClickScaleHelper(view,shapeInfo.getScaleTo(),shapeInfo.getScaleTime());
-        }else if(shapeInfo.getShowType()==2){
+            scaleHelper=new ViewClickScaleHelper(view,attr.scaleTo,attr.scaleTime);
+        }else if(attr.showType==2){
             view.setBackground(drawable);
-            alpha2Helper=new ViewClickAlpha2Helper(view,shapeInfo.getAlphaTo(),shapeInfo.getAlphaTime());
-        }else if(shapeInfo.getShowType()==3){
-            Drawable rippleDrawable=RippleHelper.getRippleDrawable(drawable,shapeInfo);
+            alpha2Helper=new ViewClickAlpha2Helper(view,attr.alphaTo,attr.alphaTime);
+        }else if(attr.showType==3){
+            Drawable rippleDrawable=RippleHelper.getRippleDrawable(drawable,attr);
             if(rippleDrawable!=null){
                 view.setBackground(rippleDrawable);
             }else{
                 view.setBackground(drawable);
                 ripple2Helper=new ViewClickRipple2Helper();
-                ripple2Helper.init(view.getContext(), view,shapeInfo.getPressedColor(), new RippleDetector.Callback() {
+                ripple2Helper.init(view.getContext(), view, attr.pressedColor, new RippleDetector.Callback() {
                     @Override
                     public void performClickAfterAnimation() {
                         if(superCallBack!=null){
@@ -192,7 +180,7 @@ public class ViewClickHelper {
                         superCallBack.superPerformClick();
                     }
                 }
-            }, shapeInfo.getScaleTime()*2);
+            }, attr.scaleTime*2);
             return true;
         }
         if(superCallBack!=null){

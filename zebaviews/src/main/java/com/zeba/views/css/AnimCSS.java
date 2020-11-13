@@ -42,8 +42,9 @@ public class AnimCSS {
     private int vWidth;
     private int vHeight;
 
-    public AnimCSS(View v,String style){
-        map.putAll(CSSFormat.form(style));
+    public void setCSS(View v, String anim){
+        map.clear();
+        map.putAll(CSSFormat.form(anim));
         refV=new WeakReference<>(v);
         if(map.size()!=0){
             if(map.get("d")==null){

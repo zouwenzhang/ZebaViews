@@ -19,13 +19,12 @@ public class TypeFaceManager {
         return cacheMap.get(name);
     }
 
-    public static void initTypeFace(Context context, TextView tv,Map<String,String> map){
-        String v=map.get("ttf");
-        if(v!=null&&v.length()!=0){
+    public static void initTypeFace(Context context, TextView tv,String ttf){
+        if(ttf!=null&&ttf.length()!=0){
             if(tv.getTypeface().isBold()){
-                tv.setTypeface(TypeFaceManager.get(context,v), Typeface.BOLD);
+                tv.setTypeface(TypeFaceManager.get(context,ttf), Typeface.BOLD);
             }else{
-                tv.setTypeface(TypeFaceManager.get(context,v), Typeface.NORMAL);
+                tv.setTypeface(TypeFaceManager.get(context,ttf), Typeface.NORMAL);
             }
         }
     }

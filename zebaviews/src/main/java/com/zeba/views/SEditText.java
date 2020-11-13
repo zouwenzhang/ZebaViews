@@ -13,9 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.zeba.views.attr.SAttr;
-import com.zeba.views.click.CShape;
 import com.zeba.views.click.ViewClickHelper;
-import com.zeba.views.databind.ResBinder;
 import com.zeba.views.interfaces.SViewer;
 import com.zeba.views.interfaces.TextChangeListener;
 import com.zeba.views.css.AnimCSS;
@@ -30,12 +28,11 @@ import java.util.Map;
 public class SEditText extends AppCompatEditText implements TextWatcher,SViewer {
 
     private ViewClickHelper clickHelper;
-    private StyleCSS styleCSS;
-    private AnimCSS animCSS;
+    private StyleCSS styleCSS=new StyleCSS();
+    private AnimCSS animCSS=new AnimCSS();
     private View clearView;
     private ViewDataBinder dataBinder=new ViewDataBinder(this);
     private SAttr sAttr;
-    private ResBinder resBinder;
 
     public SEditText(Context context) {
         super(context);
@@ -54,33 +51,28 @@ public class SEditText extends AppCompatEditText implements TextWatcher,SViewer 
 
     private TextChangeListener textChangeListener;
 
+
     private void init(Context context,AttributeSet attrs){
         sAttr=new SAttr(context,attrs);
         setBackground(null);
         clickHelper=new ViewClickHelper(this);
-        Map<String,String> map= clickHelper.getShape().init(context,attrs);
-        clickHelper.init();
-        styleCSS =new StyleCSS(this,map.get("css"));
-        animCSS =new AnimCSS(this,map.get("anim"));
-        TypeFaceManager.initTypeFace(context,this,map);
-        if(clickHelper.getShape().getShadow().size()!=0){
-            setLayerType(LAYER_TYPE_SOFTWARE,null);
-        }
         addTextChangedListener(this);
-        resBinder=new ResBinder(this,sAttr);
-    }
-
-    public CShape getShape(){
-        return clickHelper.getShape();
+        reloadAttr(context);
     }
 
     public void setShapeDrawable(){
-        clickHelper.setDrawable();
+        clickHelper.setDrawable(sAttr);
     }
 
     @Override
-    public ResBinder getResBinder(){
-        return resBinder;
+    public void reloadAttr(Context context) {
+        styleCSS.setCSS(this,sAttr);
+        animCSS.setCSS(this,sAttr.anim);
+        TypeFaceManager.initTypeFace(context,this,sAttr.ttf);
+        if(sAttr.shadow.size()!=0){
+            setLayerType(LAYER_TYPE_SOFTWARE,null);
+        }
+        setShapeDrawable();
     }
 
     @Override
@@ -105,7 +97,6 @@ public class SEditText extends AppCompatEditText implements TextWatcher,SViewer 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        resBinder.clear();
     }
 
     public void animStart(){
@@ -113,7 +104,7 @@ public class SEditText extends AppCompatEditText implements TextWatcher,SViewer 
     }
 
     public AnimCSS anim(String css){
-        animCSS=new AnimCSS(this,css);
+        animCSS.setCSS(this,css);
         return animCSS;
     }
 
@@ -163,7 +154,7 @@ public class SEditText extends AppCompatEditText implements TextWatcher,SViewer 
     }
 
     public String getFieldName(){
-        return sAttr.getFieldName();
+        return sAttr.fieldName;
     }
 
     public void setSearchClickListener(final SearchClickListener listener){

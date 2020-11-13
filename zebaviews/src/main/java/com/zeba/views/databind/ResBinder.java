@@ -18,8 +18,8 @@ public class ResBinder {
 
     public ResBinder(View view,SAttr attr){
         this.view=view;
-        pageName=attr.getPageName();
-        pageCode=attr.getPageCode();
+        pageName=attr.pageName;
+        pageCode=attr.pageCode;
         this.attr=attr;
     }
 
@@ -28,32 +28,32 @@ public class ResBinder {
             view=null;
             return;
         }
-        if(hasValue(attr.getBg())){
-            view.setBackground(loadDrawable(attr.getBg()));
+        if(hasValue(attr.bg)){
+            view.setBackground(loadDrawable(attr.bg));
         }else if(view instanceof ImageView){
             ImageView iv=(ImageView) view;
-            if(hasValue(attr.getImg())){
-                iv.setImageDrawable(loadDrawable(attr.getImg()));
-            }
+//            if(hasValue(attr.getImg())){
+//                iv.setImageDrawable(loadDrawable(attr.getImg()));
+//            }
         }else if(view instanceof TextView){
             TextView tv=(TextView)view;
             Drawable[] ds=new Drawable[4];
-            if(hasValue(attr.getImgLeft())){
-                ds[0]=loadDrawable(attr.getImgLeft());
-            }else if(hasValue(attr.getImgTop())){
-                ds[1]=loadDrawable(attr.getImgTop());
-            }else if(hasValue(attr.getImgRight())){
-                ds[2]=loadDrawable(attr.getImgRight());
-            }else if(hasValue(attr.getImgBottom())){
-                ds[3]=loadDrawable(attr.getImgBottom());
-            }
-            tv.setCompoundDrawablesWithIntrinsicBounds(ds[0],ds[1],ds[2],ds[3]);
-            if(hasValue(attr.getPageHint())){
-                tv.setHint(getText(attr.getPageHint()));
-            }
-            if(hasValue(attr.getPageText())){
-                tv.setText(getText(attr.getPageText()));
-            }
+//            if(hasValue(attr.getImgLeft())){
+//                ds[0]=loadDrawable(attr.getImgLeft());
+//            }else if(hasValue(attr.getImgTop())){
+//                ds[1]=loadDrawable(attr.getImgTop());
+//            }else if(hasValue(attr.getImgRight())){
+//                ds[2]=loadDrawable(attr.getImgRight());
+//            }else if(hasValue(attr.getImgBottom())){
+//                ds[3]=loadDrawable(attr.getImgBottom());
+//            }
+//            tv.setCompoundDrawablesWithIntrinsicBounds(ds[0],ds[1],ds[2],ds[3]);
+//            if(hasValue(attr.getPageHint())){
+//                tv.setHint(getText(attr.getPageHint()));
+//            }
+//            if(hasValue(attr.getPageText())){
+//                tv.setText(getText(attr.getPageText()));
+//            }
         }
     }
 

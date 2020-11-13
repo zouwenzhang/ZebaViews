@@ -21,7 +21,13 @@ public class DataBinder {
                 try{
                     Field[] fields= hostObj.getClass().getDeclaredFields();
                     for(Field f:fields){
+                        f.setAccessible(true);
                         if(f.getType()==dataObj.getClass()){
+                            Object mo=f.get(hostObj);
+                            if(mo==null){
+                                continue;
+                            }
+                            System.out.println("dataObj1="+mo.getClass().getName()+",dataObj2="+dataObj.getClass().getName());
                             if(f.get(hostObj)==dataObj){
                                 f.set(hostObj,proxyObj);
                                 break;

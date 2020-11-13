@@ -1,8 +1,12 @@
 package com.zeba.views.interfaces;
 
-import com.zeba.views.databind.ResBinder;
+import android.content.Context;
+
+import com.zeba.views.attr.SAttr;
 
 public interface SViewer {
 
-    public ResBinder getResBinder();
+    public void reloadAttr(Context context);
+    public SAttr getSAttr();
+
 }

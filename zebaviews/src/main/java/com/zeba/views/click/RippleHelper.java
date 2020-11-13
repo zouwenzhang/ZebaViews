@@ -1,28 +1,28 @@
 package com.zeba.views.click;
 
 import android.content.res.ColorStateList;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
+
+import com.zeba.views.attr.SAttr;
 
 public class RippleHelper {
 
-    public static Drawable getRippleDrawable(Drawable drawable,CShape info) {
-        int pressedColor=info.getPressedColor();
+    public static Drawable getRippleDrawable(Drawable drawable, SAttr attr) {
+        int pressedColor=attr.pressedColor;
         if (pressedColor == 0) {
-            pressedColor = getLightOrDarken(info.getDefaultColor(), 0.2D);
-            info.setPressedColor(pressedColor);
+            if(attr.defaultColor==Color.parseColor("#ffffff")){
+                pressedColor=Color.parseColor("#eeeeee");
+            }else{
+                pressedColor = getLightOrDarken(attr.defaultColor, 0.2D);
+            }
+            attr.pressedColor=pressedColor;
         }
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             ColorStateList pressedColorDw = ColorStateList.valueOf(pressedColor);
-            return new RippleDrawable(pressedColorDw, drawable, ShapeHelper.getShapeDrawable(info));
+            return new RippleDrawable(pressedColorDw, drawable, ShapeHelper.getShapeDrawable(attr));
         }
 //        else if(!isRipple){
 ////            StateListDrawable stateListDrawable = new StateListDrawable();
@@ -34,31 +34,31 @@ public class RippleHelper {
         return null;
     }
 
-    private static Drawable getShape(final CShape info) {
-        ShapeDrawable mask = new ShapeDrawable(new RectShape() {
-            @Override
-            public void draw(Canvas canvas, Paint paint) {
-                float roundRadius=info.getRoundRadius();
-                float topLeftRadius=info.getTopLeftRadius();
-                float topRightRadius=info.getTopRightRadius();
-                float bottomRightRadius=info.getBottomRightRadius();
-                float bottomLeftRadius=info.getBottomLeftRadius();
-                final float width = this.getWidth();
-                final float height = this.getHeight();
-                RectF rectF = new RectF(0, 0, width, height);
-                if (roundRadius != 0) {
-                    canvas.drawRoundRect(rectF, roundRadius, roundRadius, paint);
-                } else if (topLeftRadius != 0 || topRightRadius != 0 || bottomRightRadius != 0 || bottomLeftRadius != 0) {
-                    Path path = new Path();
-                    path.addRoundRect(rectF, new float[]{topLeftRadius, topLeftRadius, topRightRadius, topRightRadius, bottomRightRadius, bottomRightRadius, bottomLeftRadius, bottomLeftRadius}, Path.Direction.CW);
-                    canvas.drawPath(path, paint);
-                } else {
-                    canvas.drawRect(rectF, paint);
-                }
-            }
-        });
-        return mask;
-    }
+//    private static Drawable getShape(final CShape info) {
+//        ShapeDrawable mask = new ShapeDrawable(new RectShape() {
+//            @Override
+//            public void draw(Canvas canvas, Paint paint) {
+//                float roundRadius=info.getRoundRadius();
+//                float topLeftRadius=info.getTopLeftRadius();
+//                float topRightRadius=info.getTopRightRadius();
+//                float bottomRightRadius=info.getBottomRightRadius();
+//                float bottomLeftRadius=info.getBottomLeftRadius();
+//                final float width = this.getWidth();
+//                final float height = this.getHeight();
+//                RectF rectF = new RectF(0, 0, width, height);
+//                if (roundRadius != 0) {
+//                    canvas.drawRoundRect(rectF, roundRadius, roundRadius, paint);
+//                } else if (topLeftRadius != 0 || topRightRadius != 0 || bottomRightRadius != 0 || bottomLeftRadius != 0) {
+//                    Path path = new Path();
+//                    path.addRoundRect(rectF, new float[]{topLeftRadius, topLeftRadius, topRightRadius, topRightRadius, bottomRightRadius, bottomRightRadius, bottomLeftRadius, bottomLeftRadius}, Path.Direction.CW);
+//                    canvas.drawPath(path, paint);
+//                } else {
+//                    canvas.drawRect(rectF, paint);
+//                }
+//            }
+//        });
+//        return mask;
+//    }
 
     //单色变暗
     private static int darkenColor(int color, double parameter) {

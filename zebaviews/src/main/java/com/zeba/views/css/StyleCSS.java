@@ -6,11 +6,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.zeba.views.click.CShape;
-import com.zeba.views.click.ShapeFrameLayout;
-import com.zeba.views.click.ShapeImageView;
-import com.zeba.views.click.ShapeLinearLayout;
-import com.zeba.views.click.ShapeTextView;
+import com.zeba.views.attr.SAttr;
 import com.zeba.views.utils.DpSpUtil;
 
 import java.util.Map;
@@ -19,16 +15,8 @@ public class StyleCSS {
 
     private Map<String,String> sMap;
 
-    public StyleCSS(View v, String style){
-        try {
-            sMap=CSSFormat.form(style);
-            init(v);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public void init(View v){
+    public void setCSS(View v, SAttr attr){
+        sMap=CSSFormat.form(attr.css);
         if(sMap.get("p")!=null){
             int pp=dp(v,"p");
             v.setPadding(pp,pp,pp,pp);
@@ -74,42 +62,23 @@ public class StyleCSS {
             }
         }
         if(sMap.get("r")!=null){
-            CShape cShape=getShape(v);
-            if(cShape!=null){
-                cShape.setRoundRadius(dp(v,"r"));
-                cShape.update();
-            }
+            attr.roundRadius=dp(v,"r");
         }else{
-            CShape cShape=getShape(v);
-            if(cShape!=null){
-                boolean find=false;
-                if(sMap.get("rtl")!=null){
-                    cShape.topLeftRadius(dp(v,"rtl"));
-                    find=true;
-                }
-                if(sMap.get("rtr")!=null){
-                    cShape.topRightRadius(dp(v,"rtr"));
-                    find=true;
-                }
-                if(sMap.get("rbl")!=null){
-                    cShape.bottomLeftRadius(dp(v,"rbl"));
-                    find=true;
-                }
-                if(sMap.get("rbr")!=null){
-                    cShape.bottomRightRadius(dp(v,"rbr"));
-                    find=true;
-                }
-                if(find){
-                    cShape.update();
-                }
+            if(sMap.get("rtl")!=null){
+                attr.topLeftRadius=dp(v,"rtl");
+            }
+            if(sMap.get("rtr")!=null){
+                attr.topRightRadius=dp(v,"rtr");
+            }
+            if(sMap.get("rbl")!=null){
+                attr.bottomLeftRadius=dp(v,"rbl");
+            }
+            if(sMap.get("rbr")!=null){
+                attr.bottomRightRadius=dp(v,"rbr");
             }
         }
         if(sMap.get("sw")!=null){
-            CShape cShape=getShape(v);
-            if(cShape!=null){
-                cShape.setStrokeWidth(dp(v,"sw"));
-                cShape.update();
-            }
+            attr.strokeWidth=dp(v,"sw");
         }
         if(sMap.get("v")!=null){
             v.setVisibility("1".equals(sMap.get("v"))?View.VISIBLE:View.GONE);
@@ -211,20 +180,4 @@ public class StyleCSS {
         return Gravity.LEFT;
     }
 
-    private CShape getShape(View v){
-        if(v instanceof ShapeTextView){
-            ShapeTextView stv=(ShapeTextView)v;
-            return stv.getShape();
-        }else if(v instanceof ShapeLinearLayout){
-            ShapeLinearLayout sll=(ShapeLinearLayout) v;
-            return sll.getShape();
-        }else if(v instanceof ShapeFrameLayout){
-            ShapeFrameLayout sll=(ShapeFrameLayout) v;
-            return sll.getShape();
-        }else if(v instanceof ShapeImageView){
-            ShapeImageView sll=(ShapeImageView) v;
-            return sll.getShape();
-        }
-        return null;
-    }
 }

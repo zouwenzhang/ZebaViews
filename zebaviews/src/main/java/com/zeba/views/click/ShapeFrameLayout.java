@@ -6,15 +6,18 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
+import com.zeba.views.attr.SAttr;
 import com.zeba.views.css.AnimCSS;
 import com.zeba.views.css.StyleCSS;
+import com.zeba.views.interfaces.SViewer;
 
 import java.util.Map;
 
-public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack{
+public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack, SViewer {
     private ViewClickHelper clickHelper;
-    private StyleCSS styleCSS;
-    private AnimCSS animCSS;
+    private StyleCSS styleCSS=new StyleCSS();
+    private AnimCSS animCSS=new AnimCSS();
+    private SAttr sAttr;
     public ShapeFrameLayout(Context context) {
         super(context);
         init(context,null);
@@ -31,22 +34,16 @@ public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack{
     }
 
     private void init(Context context,AttributeSet attrs){
+        sAttr=new SAttr(context,attrs);
         clickHelper=new ViewClickHelper(this);
-        Map<String,String> map= clickHelper.getShape().init(context,attrs);
-        clickHelper.init();
-        styleCSS =new StyleCSS(this,map.get("css"));
-        animCSS =new AnimCSS(this,map.get("anim"));
-        if(clickHelper.getShape().getShadow().size()!=0){
+        if(sAttr.shadow.size()!=0){
             setLayerType(LAYER_TYPE_SOFTWARE,null);
         }
-    }
-
-    public CShape getShape(){
-        return clickHelper.getShape();
+        reloadAttr(context);
     }
 
     public void setShapeDrawable(){
-        clickHelper.setDrawable();
+        clickHelper.setDrawable(sAttr);
     }
 
     @Override
@@ -72,7 +69,7 @@ public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack{
     }
 
     public AnimCSS anim(String css){
-        animCSS=new AnimCSS(this,css);
+        animCSS.setCSS(this,css);
         return animCSS;
     }
 
@@ -115,5 +112,17 @@ public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack{
     @Override
     public boolean superOnTouchEvent(MotionEvent event) {
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public void reloadAttr(Context context) {
+        styleCSS.setCSS(this,sAttr);
+        animCSS.setCSS(this,sAttr.css);
+        setShapeDrawable();
+    }
+
+    @Override
+    public SAttr getSAttr() {
+        return sAttr;
     }
 }

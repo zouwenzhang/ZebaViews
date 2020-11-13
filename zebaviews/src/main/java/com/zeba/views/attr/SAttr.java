@@ -11,27 +11,42 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SAttr {
-    private Map<String,String> attrMap=new HashMap<>();
-    private int strokeWidth;
-    private int strokeColor;
-    private float roundRadius;
-    private int defaultColor;
-    private float topLeftRadius;
-    private float topRightRadius;
-    private float bottomLeftRadius;
-    private float bottomRightRadius;
-    private int pressedColor;
-    private Map<String,String> line;
-    private Map<String,String> sweep;
-    private Map<String,String> circle;
-    private Map<String,String> shadow;
-    private Map<String,String> svg;
+    public Map<String,String> attrMap=new HashMap<>();
+    public int strokeWidth;
+    public int strokeColor;
+    public float roundRadius;
+    public int defaultColor;
+    public float topLeftRadius;
+    public float topRightRadius;
+    public float bottomLeftRadius;
+    public float bottomRightRadius;
+    public int pressedColor;
+    public int loadingColor;
+    public String css;
+    public String anim;
+    public String ttf;
+    public String fieldName;
+    public String bg;
+    public String img;
+    public String imgLeft;
+    public String imgTop;
+    public String imgRight;
+    public String imgBottom;
+    public String pageName;
+    public String pageCode;
+    public String pageText;
+    public String pageHint;
+    public Map<String,String> line;
+    public Map<String,String> sweep;
+    public Map<String,String> circle;
+    public Map<String,String> shadow;
+    public Map<String,String> svg;
 
-    private int showType;
-    private float scaleTo;
-    private int scaleTime=100;
-    private float alphaTo;
-    private int alphaTime=100;
+    public int showType;
+    public float scaleTo;
+    public int scaleTime=100;
+    public float alphaTo;
+    public int alphaTime=100;
     public SAttr(Context context,AttributeSet attrs){
         if(attrs==null){
             line=new HashMap<>();
@@ -39,6 +54,7 @@ public class SAttr {
             circle=new HashMap<>();
             shadow=new HashMap<>();
             svg=new HashMap<>();
+            return;
         }
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShapeTextView);
         pressedColor = typedArray.getColor(R.styleable.ShapeTextView_pressedColor, 0);
@@ -51,12 +67,10 @@ public class SAttr {
         bottomLeftRadius = typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_bottomLeftRadius, 0);
         bottomRightRadius = typedArray.getDimensionPixelOffset(R.styleable.ShapeTextView_bottomRightRadius, 0);
         String type=typedArray.getString(R.styleable.ShapeTextView_showType);
-        String style=typedArray.getString(R.styleable.ShapeTextView_css);
-        attrMap.put("css",style);
-        String anim=typedArray.getString(R.styleable.ShapeTextView_anim);
-        attrMap.put("anim",anim);
-        String ttf=typedArray.getString(R.styleable.ShapeTextView_ttf);
-        attrMap.put("ttf",ttf);
+        setShowType(type);
+        css=typedArray.getString(R.styleable.ShapeTextView_css);
+        anim=typedArray.getString(R.styleable.ShapeTextView_anim);
+        ttf=typedArray.getString(R.styleable.ShapeTextView_ttf);
         String lines=typedArray.getString(R.styleable.ShapeTextView_gradientLine);
         line= CSSFormat.form(lines);
         String sweeps=typedArray.getString(R.styleable.ShapeTextView_gradientSweep);
@@ -67,18 +81,17 @@ public class SAttr {
         shadow=CSSFormat.form(shadows);
         String svgs=typedArray.getString(R.styleable.ShapeTextView_svg);
         svg=CSSFormat.form(svgs);
-        attrMap.put("fieldName",typedArray.getString(R.styleable.ShapeTextView_fieldName));
-        attrMap.put("bg",typedArray.getString(R.styleable.ShapeTextView_bg));
-        attrMap.put("img",typedArray.getString(R.styleable.ShapeTextView_img));
-        attrMap.put("imgLeft",typedArray.getString(R.styleable.ShapeTextView_imgLeft));
-        attrMap.put("imgTop",typedArray.getString(R.styleable.ShapeTextView_imgTop));
-        attrMap.put("imgRight",typedArray.getString(R.styleable.ShapeTextView_imgRight));
-        attrMap.put("imgBottom",typedArray.getString(R.styleable.ShapeTextView_imgBottom));
-        attrMap.put("pageName",typedArray.getString(R.styleable.ShapeTextView_pageName));
-        attrMap.put("pageCode",typedArray.getString(R.styleable.ShapeTextView_pageCode));
-        attrMap.put("pageText",typedArray.getString(R.styleable.ShapeTextView_pageText));
-        attrMap.put("pageHint",typedArray.getString(R.styleable.ShapeTextView_pageHint));
-        initShowType(type);
+        fieldName=typedArray.getString(R.styleable.ShapeTextView_fieldName);
+        bg=typedArray.getString(R.styleable.ShapeTextView_bg);
+        img=typedArray.getString(R.styleable.ShapeTextView_img);
+        imgLeft=typedArray.getString(R.styleable.ShapeTextView_imgLeft);
+        imgTop=typedArray.getString(R.styleable.ShapeTextView_imgTop);
+        imgRight=typedArray.getString(R.styleable.ShapeTextView_imgRight);
+        imgBottom=typedArray.getString(R.styleable.ShapeTextView_imgBottom);
+        pageName=typedArray.getString(R.styleable.ShapeTextView_pageName);
+        pageCode=typedArray.getString(R.styleable.ShapeTextView_pageCode);
+        pageText=typedArray.getString(R.styleable.ShapeTextView_pageText);
+        pageHint=typedArray.getString(R.styleable.ShapeTextView_pageHint);
         scaleTo=typedArray.getFloat(R.styleable.ShapeTextView_scaleTo,0.95f);
         scaleTime=typedArray.getInteger(R.styleable.ShapeTextView_scaleTime,100);
         alphaTo=typedArray.getFloat(R.styleable.ShapeTextView_alphaTo,0.7f);
@@ -86,56 +99,147 @@ public class SAttr {
         typedArray.recycle();
     }
 
-    private void initShowType(String type){
-        if("none".equals(type)||"0".equals(type)){
-            showType=0;
-        }else if("scale".equals(type)||"1".equals(type)){
+    public void setShowType(String type){
+        if("scale".equals(type)||"1".equals(type)){
             showType=1;
         }else if("alpha".equals(type)||"2".equals(type)){
             showType=2;
         }else if("ripple".equals(type)||"3".equals(type)){
             showType=3;
+        }else{
+            showType=0;
         }
     }
 
-    public String getBg(){
-        return attrMap.get("bg");
+    public void setStrokeWidth(int strokeWidth) {
+        this.strokeWidth = strokeWidth;
     }
 
-    public String getImg(){
-        return attrMap.get("img");
+    public void setStrokeColor(int strokeColor) {
+        this.strokeColor = strokeColor;
     }
 
-    public String getImgLeft(){
-        return attrMap.get("imgLeft");
+    public void setRoundRadius(float roundRadius) {
+        this.roundRadius = roundRadius;
     }
 
-    public String getImgTop(){
-        return attrMap.get("imgTop");
+    public void setDefaultColor(int defaultColor) {
+        this.defaultColor = defaultColor;
     }
 
-    public String getImgRight(){
-        return attrMap.get("imgRight");
+    public void setTopLeftRadius(float topLeftRadius) {
+        this.topLeftRadius = topLeftRadius;
     }
 
-    public String getImgBottom(){
-        return attrMap.get("imgBottom");
+    public void setTopRightRadius(float topRightRadius) {
+        this.topRightRadius = topRightRadius;
     }
 
-    public String getFieldName(){
-        return attrMap.get("fieldName");
+    public void setBottomLeftRadius(float bottomLeftRadius) {
+        this.bottomLeftRadius = bottomLeftRadius;
     }
 
-    public String getPageName(){
-        return attrMap.get("pageName");
+    public void setBottomRightRadius(float bottomRightRadius) {
+        this.bottomRightRadius = bottomRightRadius;
     }
-    public String getPageCode(){
-        return attrMap.get("pageCode");
+
+    public void setPressedColor(int pressedColor) {
+        this.pressedColor = pressedColor;
     }
-    public String getPageText(){
-        return attrMap.get("pageText");
+
+    public void setLoadingColor(int loadingColor) {
+        this.loadingColor = loadingColor;
     }
-    public String getPageHint(){
-        return attrMap.get("pageHint");
+
+    public void setCss(String css) {
+        this.css = css;
+    }
+
+    public void setAnim(String anim) {
+        this.anim = anim;
+    }
+
+    public void setTtf(String ttf) {
+        this.ttf = ttf;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public void setBg(String bg) {
+        this.bg = bg;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public void setImgLeft(String imgLeft) {
+        this.imgLeft = imgLeft;
+    }
+
+    public void setImgTop(String imgTop) {
+        this.imgTop = imgTop;
+    }
+
+    public void setImgRight(String imgRight) {
+        this.imgRight = imgRight;
+    }
+
+    public void setImgBottom(String imgBottom) {
+        this.imgBottom = imgBottom;
+    }
+
+    public void setPageName(String pageName) {
+        this.pageName = pageName;
+    }
+
+    public void setPageCode(String pageCode) {
+        this.pageCode = pageCode;
+    }
+
+    public void setPageText(String pageText) {
+        this.pageText = pageText;
+    }
+
+    public void setPageHint(String pageHint) {
+        this.pageHint = pageHint;
+    }
+
+    public void setLine(Map<String, String> line) {
+        this.line = line;
+    }
+
+    public void setSweep(Map<String, String> sweep) {
+        this.sweep = sweep;
+    }
+
+    public void setCircle(Map<String, String> circle) {
+        this.circle = circle;
+    }
+
+    public void setShadow(Map<String, String> shadow) {
+        this.shadow = shadow;
+    }
+
+    public void setSvg(Map<String, String> svg) {
+        this.svg = svg;
+    }
+
+    public void setScaleTo(float scaleTo) {
+        this.scaleTo = scaleTo;
+    }
+
+    public void setScaleTime(int scaleTime) {
+        this.scaleTime = scaleTime;
+    }
+
+    public void setAlphaTo(float alphaTo) {
+        this.alphaTo = alphaTo;
+    }
+
+    public void setAlphaTime(int alphaTime) {
+        this.alphaTime = alphaTime;
     }
 }

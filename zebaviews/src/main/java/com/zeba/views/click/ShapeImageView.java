@@ -14,17 +14,20 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 
+import com.zeba.views.attr.SAttr;
 import com.zeba.views.drawables.SVGDrawable;
 import com.zeba.views.css.AnimCSS;
 import com.zeba.views.css.StyleCSS;
+import com.zeba.views.interfaces.SViewer;
 
 import java.util.Map;
 
-public class ShapeImageView extends AppCompatImageView implements ViewSuperCallBack {
+public class ShapeImageView extends AppCompatImageView implements ViewSuperCallBack, SViewer {
     private ViewClickHelper clickHelper;
-    private StyleCSS styleCSS;
-    private AnimCSS animCSS;
+    private StyleCSS styleCSS=new StyleCSS();
+    private AnimCSS animCSS=new AnimCSS();
     private SVGDrawable svgDrawable;
+    private SAttr sAttr;
 
     private int type=1;
     private static final int TYPE_CIRCLE = 0;
@@ -53,44 +56,13 @@ public class ShapeImageView extends AppCompatImageView implements ViewSuperCallB
     }
 
     private void init(Context context,AttributeSet attrs){
+        sAttr=new SAttr(context,attrs);
         clickHelper=new ViewClickHelper(this);
-        Map<String,String> map= clickHelper.getShape().init(context,attrs);
-        clickHelper.init();
-        styleCSS =new StyleCSS(this,map.get("css"));
-        animCSS =new AnimCSS(this,map.get("anim"));
-        if(clickHelper.getShape().getSvg().size()!=0){
-            svgDrawable=new SVGDrawable(context,clickHelper.getShape().getSvg());
-        }
-        if(clickHelper.getShape().getRoundRadius()!=0){
-            roundLeftTop=clickHelper.getShape().getRoundRadius();
-            roundLeftBottom=clickHelper.getShape().getRoundRadius();
-            roundRightTop=clickHelper.getShape().getRoundRadius();
-            roundRightBottom=clickHelper.getShape().getRoundRadius();
-        }else{
-            roundLeftTop=clickHelper.getShape().getTopLeftRadius();
-            roundLeftBottom=clickHelper.getShape().getBottomLeftRadius();
-            roundRightTop=clickHelper.getShape().getTopRightRadius();
-            roundRightBottom=clickHelper.getShape().getBottomRightRadius();
-        }
-        paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setAntiAlias(true);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-
-        paint2 = new Paint();
-        paint2.setXfermode(null);
-
-        if(clickHelper.getShape().getShadow().size()!=0){
-            setLayerType(LAYER_TYPE_SOFTWARE,null);
-        }
-    }
-
-    public CShape getShape(){
-        return clickHelper.getShape();
+        reloadAttr(context);
     }
 
     public void setShapeDrawable(){
-        clickHelper.setDrawable();
+        clickHelper.setDrawable(sAttr);
     }
 
     @Override
@@ -116,7 +88,7 @@ public class ShapeImageView extends AppCompatImageView implements ViewSuperCallB
     }
 
     public AnimCSS anim(String css){
-        animCSS=new AnimCSS(this,css);
+        animCSS.setCSS(this,css);
         return animCSS;
     }
 
@@ -266,4 +238,39 @@ public class ShapeImageView extends AppCompatImageView implements ViewSuperCallB
                 dpVal, getResources().getDisplayMetrics());
     }
 
+    @Override
+    public void reloadAttr(Context context) {
+        styleCSS.setCSS(this,sAttr);
+        animCSS.setCSS(this,sAttr.anim);
+        if(sAttr.svg.size()!=0){
+            svgDrawable=new SVGDrawable(context,sAttr.svg);
+        }
+        if(sAttr.roundRadius!=0){
+            roundLeftTop=sAttr.roundRadius;
+            roundLeftBottom=sAttr.roundRadius;
+            roundRightTop=sAttr.roundRadius;
+            roundRightBottom=sAttr.roundRadius;
+        }else{
+            roundLeftTop=sAttr.topLeftRadius;
+            roundLeftBottom=sAttr.bottomLeftRadius;
+            roundRightTop=sAttr.topRightRadius;
+            roundRightBottom=sAttr.bottomRightRadius;
+        }
+        paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setAntiAlias(true);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+
+        paint2 = new Paint();
+        paint2.setXfermode(null);
+        if(sAttr.shadow.size()!=0){
+            setLayerType(LAYER_TYPE_SOFTWARE,null);
+        }
+        setShapeDrawable();
+    }
+
+    @Override
+    public SAttr getSAttr() {
+        return sAttr;
+    }
 }

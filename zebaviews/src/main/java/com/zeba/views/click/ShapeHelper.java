@@ -4,30 +4,31 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
+import com.zeba.views.attr.SAttr;
 import com.zeba.views.drawables.ZBGDrawable;
 import com.zeba.views.css.CSSFormat;
 
 public class ShapeHelper {
 
-    public static Drawable getShapeDrawable(CShape info) {
-        int strokeWidth=info.getStrokeWidth();
-        int strokeColor=info.getStrokeColor();
-        float roundRadius=info.getRoundRadius();
-        int defaultColor=info.getDefaultColor();
-        float topLeftRadius=info.getTopLeftRadius();
-        float topRightRadius=info.getTopRightRadius();
-        float bottomLeftRadius=info.getBottomLeftRadius();
-        float bottomRightRadius=info.getBottomRightRadius();
+    public static Drawable getShapeDrawable(SAttr attr) {
+        int strokeWidth=attr.strokeWidth;
+        int strokeColor=attr.strokeColor;
+        float roundRadius=attr.roundRadius;
+        int defaultColor=attr.defaultColor;
+        float topLeftRadius=attr.topLeftRadius;
+        float topRightRadius=attr.topRightRadius;
+        float bottomLeftRadius=attr.bottomLeftRadius;
+        float bottomRightRadius=attr.bottomRightRadius;
         ZBGDrawable dw = new ZBGDrawable();
         dw.setShape(GradientDrawable.RECTANGLE);
         if (strokeWidth != 0) {
             dw.setStroke(strokeWidth, strokeColor == 0 ? Color.TRANSPARENT : strokeColor);
         }
-        if(info.getLine().size()!=0){
+        if(attr.line!=null&&attr.line.size()!=0){
             dw.setDither(true);
-            dw.setColors(CSSFormat.toColors(info.getLine().get("c")));
+            dw.setColors(CSSFormat.toColors(attr.line.get("c")));
             dw.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-            int a=Integer.parseInt(info.getLine().get("a"));//角度
+            int a=Integer.parseInt(attr.line.get("a"));//角度
             switch(a){
                 case 0:dw.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);break;
                 case 45:dw.setOrientation(GradientDrawable.Orientation.TL_BR);break;
@@ -38,16 +39,16 @@ public class ShapeHelper {
                 case 270:dw.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);break;
                 case 315:dw.setOrientation(GradientDrawable.Orientation.BL_TR);break;
             }
-        }else if(info.getCircle().size()!=0){
+        }else if(attr.circle!=null&&attr.circle.size()!=0){
             dw.setDither(true);
-            dw.setColors(CSSFormat.toColors(info.getCircle().get("c"))); //添加颜色组
+            dw.setColors(CSSFormat.toColors(attr.circle.get("c"))); //添加颜色组
             dw.setGradientType(GradientDrawable.RADIAL_GRADIENT);//设置半径渐变
-            dw.setGradientRadius(Float.parseFloat(info.getCircle().get("r")));//渐变的半径值
-        }else if(info.getSweep().size()!=0){
+            dw.setGradientRadius(Float.parseFloat(attr.circle.get("r")));//渐变的半径值
+        }else if(attr.sweep!=null&&attr.sweep.size()!=0){
             dw.setDither(true);
-            dw.setColors(CSSFormat.toColors(info.getCircle().get("c"))); //添加颜色组
+            dw.setColors(CSSFormat.toColors(attr.sweep.get("c"))); //添加颜色组
             dw.setGradientType(GradientDrawable.SWEEP_GRADIENT);//设置扫描渐变
-            dw.setGradientCenter(Float.parseFloat(info.getCircle().get("cx")),Float.parseFloat(info.getCircle().get("cy")));//渐变中心点
+            dw.setGradientCenter(Float.parseFloat(attr.sweep.get("cx")),Float.parseFloat(attr.sweep.get("cy")));//渐变中心点
         }else if (defaultColor != 0) {
             dw.setColor(defaultColor);
         }
@@ -56,8 +57,8 @@ public class ShapeHelper {
         } else if (topLeftRadius != 0 || topRightRadius != 0 || bottomRightRadius != 0 || bottomLeftRadius != 0) {
             dw.setCornerRadii(new float[]{topLeftRadius, topLeftRadius, topRightRadius, topRightRadius, bottomRightRadius, bottomRightRadius, bottomLeftRadius, bottomLeftRadius});
         }
-        if(info.getShadow().size()!=0){
-            dw.setShadow(info.getShadow());
+        if(attr.shadow!=null&&attr.shadow.size()!=0){
+            dw.setShadow(attr.shadow);
         }
         return dw;
     }

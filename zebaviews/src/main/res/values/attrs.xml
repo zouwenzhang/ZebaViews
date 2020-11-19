@@ -58,6 +58,7 @@
     <attr name="pageText" format="string"/>
     <attr name="pageHint" format="string"/>
     <attr name="pageCode" format="string"/>
+    <attr name="spanCss" format="string"/>
 
     <declare-styleable name="ShapeTextView">
         <attr name="showType"/>
@@ -98,6 +99,7 @@
         <attr name="pageText"/>
         <attr name="pageHint"/>
         <attr name="pageCode"/>
+        <attr name="spanCss"/>
     </declare-styleable>
     <declare-styleable name="ShapeLinearLayout">
         <attr name="showType"/>

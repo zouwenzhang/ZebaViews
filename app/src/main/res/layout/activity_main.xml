@@ -46,4 +46,22 @@
         android:textColor="#343434"
         android:text="123456"
         app:css="p:15;"/>
+    <com.zeba.views.SHeaderListView
+        android:id="@+id/h_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#e39294"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#634256"/>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+    </com.zeba.views.SHeaderListView>
 </LinearLayout>

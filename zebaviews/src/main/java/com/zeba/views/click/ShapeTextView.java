@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.SpannableString;
@@ -105,6 +107,10 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
         if(animCSS.isTextChangeStart()){
             animStart();
         }
+    }
+
+    public void setLoadingHint(String hint){
+        loadingHint=hint;
     }
 
     public void showLoading(String hint){
@@ -232,4 +238,49 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 dpVal, getResources().getDisplayMetrics());
     }
+
+    public void setDrawableLeft(int resId){
+        setDrawables(resId,0);
+    }
+
+    public void setDrawableLeft(Drawable drawable){
+        setDrawables(drawable,0);
+    }
+
+    public void setDrawableTop(int resId){
+        setDrawables(resId,1);
+    }
+
+    public void setDrawableTop(Drawable drawable){
+        setDrawables(drawable,1);
+    }
+
+    public void setDrawableRight(int resId){
+        setDrawables(resId,2);
+    }
+
+    public void setDrawableRight(Drawable drawable){
+        setDrawables(drawable,2);
+    }
+
+    public void setDrawableBottom(int resId){
+        setDrawables(resId,3);
+    }
+
+    public void setDrawableBottom(Drawable drawable){
+        setDrawables(drawable,3);
+    }
+
+    private void setDrawables(int resId,int index){
+        Drawable[] dws= getCompoundDrawables();
+        dws[index]= getResources().getDrawable(resId);
+        setCompoundDrawablesWithIntrinsicBounds(dws[0],dws[1],dws[2],dws[3]);
+    }
+
+    private void setDrawables(Drawable drawable,int index){
+        Drawable[] dws= getCompoundDrawables();
+        dws[index]= drawable;
+        setCompoundDrawablesWithIntrinsicBounds(dws[0],dws[1],dws[2],dws[3]);
+    }
+
 }

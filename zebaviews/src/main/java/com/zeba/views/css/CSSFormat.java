@@ -2,11 +2,27 @@ package com.zeba.views.css;
 
 import android.graphics.Color;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CSSFormat {
-
+    public static List<Map<String,String>> formList(String css){
+        List<Map<String,String>> list=new ArrayList<>();
+        int p=0;
+        while(p<css.length()){
+            int start=css.indexOf("{",p);
+            int end=css.indexOf("}",p);
+            p=end+1;
+            if(start==-1||end==-1){
+                break;
+            }
+            String ci=css.substring(start+1,end-1);
+            list.add(form(ci));
+        }
+        return list;
+    }
     public static Map<String,String> form(String css){
         Map<String,String> map=new HashMap<>();
         if(css!=null&&css.length()!=0){

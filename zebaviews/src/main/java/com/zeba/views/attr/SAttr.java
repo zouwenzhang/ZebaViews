@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SAttr {
-    public Map<String,String> attrMap=new HashMap<>();
     public int strokeWidth;
     public int strokeColor;
     public float roundRadius;
@@ -96,7 +95,31 @@ public class SAttr {
         scaleTime=typedArray.getInteger(R.styleable.ShapeTextView_scaleTime,100);
         alphaTo=typedArray.getFloat(R.styleable.ShapeTextView_alphaTo,0.7f);
         alphaTime=typedArray.getInteger(R.styleable.ShapeTextView_alphaTime,200);
+        onAttr(attrs,typedArray);
         typedArray.recycle();
+    }
+
+    public void onAttr(AttributeSet attrs,TypedArray typedArray){
+
+    }
+
+    public boolean hasDrawable(){
+        if(strokeColor!=0||roundRadius!=0||defaultColor!=0){
+            return true;
+        }
+        if(line!=null&&!line.isEmpty()){
+            return true;
+        }
+        if(sweep!=null&&!sweep.isEmpty()){
+            return true;
+        }
+        if(circle!=null&&!circle.isEmpty()){
+            return true;
+        }
+        if(shadow!=null&&!shadow.isEmpty()){
+            return true;
+        }
+        return false;
     }
 
     public void setShowType(String type){

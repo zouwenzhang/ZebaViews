@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.zeba.views.SHeaderListView;
 import com.zeba.views.click.ShapeTextView;
 import com.zeba.views.css.AnimCSS;
 
@@ -53,5 +54,8 @@ public class MainActivity extends AppCompatActivity {
 //                tv1.setText("adfsd123");
 //            }
 //        },200);
+        TestAdapter adapter=new TestAdapter();
+        SHeaderListView listView=findViewById(R.id.h_list_view);
+        adapter.bindToRecyclerView(listView.getRvList());
     }
 }

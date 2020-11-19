@@ -31,13 +31,13 @@ public class ViewClickHelper {
     }
 
     public void setDrawable(SAttr attr){
+        this.attr=attr;
         if(wrView==null||wrView.get()==null){
             return;
         }
-        if(attr.defaultColor==0&&attr.strokeColor==0&&attr.roundRadius==0){
+        if(!attr.hasDrawable()){
             return;
         }
-        this.attr=attr;
         Drawable drawable=ShapeHelper.getShapeDrawable(attr);
         if(attr.showType==0){
             wrView.get().setBackground(drawable);

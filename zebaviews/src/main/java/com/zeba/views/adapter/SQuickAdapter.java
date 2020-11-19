@@ -68,6 +68,10 @@ public abstract class SQuickAdapter<T,K extends BaseViewHolder> extends BaseQuic
         openLoadAnimation(SLIDEIN_BOTTOM);
     }
 
+    public SQuickAdapter() {
+        openLoadAnimation(SLIDEIN_BOTTOM);
+    }
+
     @Override
     protected void startAnim(Animator anim, int index) {
 //        super.startAnim();

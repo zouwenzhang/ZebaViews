@@ -12,6 +12,8 @@ import java.lang.reflect.Field;
 public class ViewDataBinder {
     private Field dataField;
     private Object dataObj;
+    private Object proxyObj;
+    private Field proxyField;
     private TextView textView;
     private Object oldValue;
 
@@ -38,26 +40,32 @@ public class ViewDataBinder {
     }
 
     public void setValueToObj(String value){
-        if(dataField!=null&&dataObj!=null){
+        setValueToObj(dataField,dataObj,value);
+        setValueToObj(proxyField,proxyObj,value);
+        oldValue=value;
+    }
+
+    private void setValueToObj(Field field,Object obj,String value){
+        if(field!=null&&obj!=null){
             try{
                 String v=value;
-                if(dataField.getType()==String.class){
-                    dataField.set(dataObj,v);
+                if(field.getType()==String.class){
+                    field.set(obj,v);
                 }else{
                     if(v.length()==0){
                         v="0";
                     }
-                    if(dataField.getType()==Integer.class){
-                        dataField.set(dataObj,Integer.parseInt(v));
-                    }else if(dataField.getType()==Long.class){
-                        dataField.set(dataObj,Long.parseLong(v));
-                    }else if(dataField.getType()==Float.class){
-                        dataField.set(dataObj,Float.parseFloat(v));
-                    }else if(dataField.getType()==Double.class){
-                        dataField.set(dataObj,Double.parseDouble(v));
+                    if(field.getType()==Integer.class){
+                        field.set(obj,Integer.parseInt(v));
+                    }else if(field.getType()==Long.class){
+                        field.set(obj,Long.parseLong(v));
+                    }else if(field.getType()==Float.class){
+                        field.set(obj,Float.parseFloat(v));
+                    }else if(field.getType()==Double.class){
+                        field.set(obj,Double.parseDouble(v));
                     }
                 }
-                oldValue=dataField.get(dataObj);
+                oldValue=field.get(obj);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -95,17 +103,20 @@ public class ViewDataBinder {
                 }
             }
         };
-        ObjProxy.addListener(textView, obj, invokeListener, new ProxyFunc<Object[]>() {
+        ObjProxy.addListener(obj, invokeListener, new ProxyFunc<Object[]>() {
             @Override
             public void onResult(Object[] o) {
-                bind(o[0],name);
+                dataObj=o[0];
+                proxyObj=o[1];
+                bind(dataObj,name);
+                try{
+                    proxyField=proxyObj.getClass().getSuperclass().getDeclaredField(name);
+                    proxyField.setAccessible(true);
+                }catch (Exception e2){
+                    e2.printStackTrace();
+                }
                 if(func!=null){
                     func.onResult(o[1]);
-                }
-                try{
-                    refreshView(dataField.get(dataObj));
-                }catch (Exception e){
-                    e.printStackTrace();
                 }
             }
         });
@@ -119,4 +130,18 @@ public class ViewDataBinder {
     }
 
     private MethodInvokeListener invokeListener=null;
+
+    private void printlnObj(Object obj){
+        Field[] fs= obj.getClass().getDeclaredFields();
+        try{
+            System.out.println("classname="+obj.getClass().getName());
+            for(Field f:fs){
+                f.setAccessible(true);
+                Object v=f.get(obj);
+                System.out.println("name="+f.getName()+",value="+v);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

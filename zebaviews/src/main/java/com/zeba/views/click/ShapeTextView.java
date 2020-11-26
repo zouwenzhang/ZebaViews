@@ -90,6 +90,10 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
         return sAttr;
     }
 
+    public void refreshView(){
+        reloadAttr(getContext());
+    }
+
     public String getFieldName(){
         return sAttr.fieldName;
     }

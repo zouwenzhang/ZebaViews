@@ -42,10 +42,10 @@ public class SAttr {
     public Map<String,String> svg;
 
     public int showType;
-    public float scaleTo;
+    public float scaleTo=0.95f;
     public int scaleTime=100;
-    public float alphaTo;
-    public int alphaTime=100;
+    public float alphaTo=0.7f;
+    public int alphaTime=200;
     public SAttr(Context context,AttributeSet attrs){
         if(attrs==null){
             line=new HashMap<>();

@@ -84,7 +84,6 @@ public class SEditText extends AppCompatEditText implements TextWatcher,SViewer 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        dataBinder.onDestroy();
         styleCSS.initFinish(this);
         post(new Runnable() {
             @Override
@@ -97,6 +96,7 @@ public class SEditText extends AppCompatEditText implements TextWatcher,SViewer 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        dataBinder.onDestroy();
     }
 
     public void animStart(){

@@ -26,8 +26,8 @@ dependencies {
     api 'com.android.support:appcompat-v7:27.1.1'
     api 'com.android.support:recyclerview-v7:27.1.1'
     api 'com.google.android:flexbox:1.0.0'
-    api 'org.zeba:android-objproxy:1.0.9'
-    api 'org.zeba:android-cymchad:1.0.2'
+    api 'org.zeba:android-objproxy:1.1.2'
+    api 'org.zeba:android-cymchad:1.0.3'
 }
 
 uploadArchives {
@@ -39,7 +39,7 @@ uploadArchives {
             pom.project{
                 groupId = "org.zeba"// 唯一标识（通常为模块包名，也可以任意）
                 artifactId = "android-views" // 项目名称（通常为类库模块名称，也可以任意）
-                version = "1.6.1" // 版本号
+                version = "1.7.3" // 版本号
             }
         }
     }

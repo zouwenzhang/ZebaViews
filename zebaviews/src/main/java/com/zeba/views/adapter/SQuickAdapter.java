@@ -13,7 +13,7 @@ import com.zeba.views.SRefreshLayout;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-public abstract class SQuickAdapter<T,K extends BaseViewHolder> extends BaseQuickAdapter<T,K> {
+public abstract class SQuickAdapter<T> extends BaseQuickAdapter<T,BaseViewHolder> {
     private int pageNo=1;
     private int pageSize=10;
     private WeakReference<Context> weakContext;

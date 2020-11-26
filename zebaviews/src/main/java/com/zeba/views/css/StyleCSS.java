@@ -1,11 +1,13 @@
 package com.zeba.views.css;
 
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.zeba.views.SFlexLayout;
 import com.zeba.views.attr.SAttr;
 import com.zeba.views.utils.DpSpUtil;
 
@@ -44,6 +46,10 @@ public class StyleCSS {
                 v.setPadding(pd[0],pd[1],pd[2],pd[3]);
             }
         }
+        if(sMap.get("tc")!=null&&v instanceof TextView){
+            TextView tv=(TextView) v;
+            tv.setTextColor(Color.parseColor(sMap.get("tc")));
+        }
         if(sMap.get("si")!=null&&v instanceof TextView){
             TextView tv=(TextView) v;
             tv.setTextSize(Float.parseFloat(sMap.get("si")));
@@ -80,6 +86,12 @@ public class StyleCSS {
         if(sMap.get("sw")!=null){
             attr.strokeWidth=dp(v,"sw");
         }
+        if(sMap.get("bg")!=null){
+            attr.defaultColor= Color.parseColor(sMap.get("bg"));
+        }
+        if(sMap.get("sc")!=null){
+            attr.strokeColor= Color.parseColor(sMap.get("sc"));
+        }
         if(sMap.get("v")!=null){
             v.setVisibility("1".equals(sMap.get("v"))?View.VISIBLE:View.GONE);
         }
@@ -105,6 +117,9 @@ public class StyleCSS {
                 lp.leftMargin=m;lp.topMargin=m;lp.rightMargin=m;lp.bottomMargin=m;
             }else if(v.getLayoutParams() instanceof FrameLayout.LayoutParams){
                 FrameLayout.LayoutParams lp=(FrameLayout.LayoutParams)v.getLayoutParams();
+                lp.leftMargin=m;lp.topMargin=m;lp.rightMargin=m;lp.bottomMargin=m;
+            }else if(v.getLayoutParams() instanceof SFlexLayout.LayoutParams){
+                SFlexLayout.LayoutParams lp=(SFlexLayout.LayoutParams)v.getLayoutParams();
                 lp.leftMargin=m;lp.topMargin=m;lp.rightMargin=m;lp.bottomMargin=m;
             }
             v.setLayoutParams(v.getLayoutParams());
@@ -140,6 +155,9 @@ public class StyleCSS {
                     lp.leftMargin=ms[0];lp.topMargin=ms[1];lp.rightMargin=ms[2];lp.bottomMargin=ms[3];
                 }else if(v.getLayoutParams() instanceof FrameLayout.LayoutParams){
                     FrameLayout.LayoutParams lp=(FrameLayout.LayoutParams)v.getLayoutParams();
+                    lp.leftMargin=ms[0];lp.topMargin=ms[1];lp.rightMargin=ms[2];lp.bottomMargin=ms[3];
+                }else if(v.getLayoutParams() instanceof SFlexLayout.LayoutParams){
+                    SFlexLayout.LayoutParams lp=(SFlexLayout.LayoutParams)v.getLayoutParams();
                     lp.leftMargin=ms[0];lp.topMargin=ms[1];lp.rightMargin=ms[2];lp.bottomMargin=ms[3];
                 }
                 v.setLayoutParams(v.getLayoutParams());

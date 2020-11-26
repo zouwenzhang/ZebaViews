@@ -28,11 +28,28 @@ public abstract class SLinAdapter<T> {
     }
 
 
-    public abstract int getLayoutId(int position, T item);
+    public int getLayoutId(int position, T item){
+        return 0;
+    }
+
+    protected int getItemContentViewId(){
+        return 0;
+    }
+
+    protected View getItemContentView(){
+        return null;
+    }
 
     private View createView(int position, T item){
-        View view= View.inflate(getContext(), getLayoutId(position,item),null);
-        return view;
+        int layoutId=getLayoutId(position,item);
+        if(layoutId!=0){
+            return View.inflate(getContext(), layoutId,null);
+        }
+        layoutId=getItemContentViewId();
+        if(layoutId!=0){
+            return View.inflate(getContext(), layoutId,null);
+        }
+        return getItemContentView();
     }
 
     public abstract void onBindDataView(View view, int position, T item, boolean isBindData);

@@ -39,7 +39,7 @@ uploadArchives {
             pom.project{
                 groupId = "org.zeba"// 唯一标识（通常为模块包名，也可以任意）
                 artifactId = "android-views" // 项目名称（通常为类库模块名称，也可以任意）
-                version = "1.7.6" // 版本号
+                version = "1.7.7" // 版本号
             }
         }
     }

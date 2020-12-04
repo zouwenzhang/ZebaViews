@@ -43,19 +43,17 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(MainActivity.this,"click3",Toast.LENGTH_SHORT).show();
 //                startActivity(new Intent(MainActivity.this,WebActivity.class));
 //                new GrabTopOutPriceDialog(MainActivity.this).show();
-                animCSS.start();
+//                animCSS.start();
             }
         });
-        tv1=findViewById(R.id.tv_title);
-        animCSS=new AnimCSS().view(tv1).style("sy:1;csy:1;").postWHClose(null);
 //        tv1.postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
 //                tv1.setText("adfsd123");
 //            }
 //        },200);
-        TestAdapter adapter=new TestAdapter();
-        SHeaderListView listView=findViewById(R.id.h_list_view);
-        adapter.bindToRecyclerView(listView.getRvList());
+//        TestAdapter adapter=new TestAdapter();
+//        SHeaderListView listView=findViewById(R.id.h_list_view);
+//        adapter.bindToRecyclerView(listView.getRvList());
     }
 }

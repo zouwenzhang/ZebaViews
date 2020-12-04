@@ -265,4 +265,25 @@ public class SAttr {
     public void setAlphaTime(int alphaTime) {
         this.alphaTime = alphaTime;
     }
+
+    public int getOffBgColor() {
+        return 0;
+    }
+
+    public void setOffBgColor(int offBgColor) {
+    }
+
+    public int getOnBgColor() {
+        return 0;
+    }
+
+    public void setOnBgColor(int onBgColor) {
+    }
+
+    public int getFgColor() {
+        return 0;
+    }
+
+    public void setFgColor(int fgColor) {
+    }
 }

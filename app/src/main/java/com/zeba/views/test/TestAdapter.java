@@ -8,7 +8,7 @@ import com.zeba.views.adapter.SQuickAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestAdapter extends SQuickAdapter<String, BaseViewHolder> {
+public class TestAdapter extends SQuickAdapter<String> {
 
     public TestAdapter() {
         super(R.layout.item_test);

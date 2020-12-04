@@ -15,26 +15,12 @@
         android:text="button3"
         android:gravity="center"
         android:padding="15dp"/>
-    <com.zeba.views.STextView
-        android:id="@+id/tv_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        />
-    <com.zeba.views.SLinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:defaultColor="#ffffff"
-        app:css="m:15;r:10;"
-        app:shadow="r:10;sr:5;x:5;y:5;c:#343434"/>
-    <com.zeba.views.SEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#343434"
-        android:textSize="15sp"
-        app:css="p:10;"
-        android:hint="123456"
-        app:defaultColor="#ffffff"
+    <com.zeba.views.SSwitch
+        android:layout_width="45dp"
+        android:layout_height="23dp"
+        app:offBgColor="#e8e8e8"
+        app:onBgColor="#3399ff"
+        app:fgColor="#ffffff"
         />
     <com.zeba.views.CheckView
         android:layout_width="wrap_content"

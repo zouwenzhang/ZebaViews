@@ -59,6 +59,9 @@
     <attr name="pageHint" format="string"/>
     <attr name="pageCode" format="string"/>
     <attr name="spanCss" format="string"/>
+    <attr name="offBgColor" format="color"/>
+    <attr name="onBgColor" format="color"/>
+    <attr name="fgColor" format="color"/>
 
     <declare-styleable name="ShapeTextView">
         <attr name="showType"/>
@@ -288,5 +291,10 @@
     </declare-styleable>
     <declare-styleable name="SRefreshLayout">
         <attr name="schemeColors"/>
+    </declare-styleable>
+    <declare-styleable name="SSwitch">
+        <attr name="offBgColor"/>
+        <attr name="onBgColor"/>
+        <attr name="fgColor"/>
     </declare-styleable>
 </resources>

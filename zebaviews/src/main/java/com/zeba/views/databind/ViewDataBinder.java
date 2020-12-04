@@ -1,6 +1,9 @@
 package com.zeba.views.databind;
 
+import android.content.Context;
 import android.widget.TextView;
+
+import com.zeba.views.utils.LogViewUtil;
 
 import org.zeba.obj.proxy.MethodInvokeListener;
 import org.zeba.obj.proxy.MethodProxy;
@@ -23,8 +26,11 @@ public class ViewDataBinder {
 
     public void refreshView(Object newValue){
         try{
-            if(oldValue==null&&newValue==null){
-                return;
+            if(oldValue==null){
+                oldValue="";
+            }
+            if(newValue==null){
+                newValue="";
             }
             if(!oldValue.equals(newValue)){
                 oldValue=newValue;
@@ -78,6 +84,7 @@ public class ViewDataBinder {
             dataField.setAccessible(true);
             oldValue=dataField.get(obj);
             if(oldValue==null){
+                oldValue="";
                 textView.setText("");
             }else{
                 textView.setText(oldValue.toString());
@@ -96,8 +103,14 @@ public class ViewDataBinder {
             public void onInvoke(Object o, Object[] objects, MethodProxy methodProxy) {
                 String mn=methodProxy.getMethodName().toLowerCase();
                 String n=name.toLowerCase();
+                if(DataBinder.isDebug){
+                    System.out.println("value change "+name);
+                }
                 if(mn.equals(n)||mn.equals("set"+n)){
                     if(objects!=null&&objects.length==1){
+                        if(DataBinder.isDebug){
+                            System.out.println("value refresh "+name+objects[0]);
+                        }
                         refreshView(objects[0]);
                     }
                 }
@@ -112,6 +125,9 @@ public class ViewDataBinder {
                 try{
                     proxyField=proxyObj.getClass().getSuperclass().getDeclaredField(name);
                     proxyField.setAccessible(true);
+                    if(DataBinder.isDebug){
+                        System.out.println("bind "+name+" success");
+                    }
                 }catch (Exception e2){
                     e2.printStackTrace();
                 }
@@ -131,14 +147,16 @@ public class ViewDataBinder {
 
     private MethodInvokeListener invokeListener=null;
 
-    private void printlnObj(Object obj){
+    public static void printlnObj(Context context,Object obj){
         Field[] fs= obj.getClass().getDeclaredFields();
         try{
             System.out.println("classname="+obj.getClass().getName());
+            LogViewUtil.logToFile(context,"classname="+obj.getClass().getName());
             for(Field f:fs){
                 f.setAccessible(true);
                 Object v=f.get(obj);
                 System.out.println("name="+f.getName()+",value="+v);
+                LogViewUtil.logToFile(context,"name="+f.getName()+",value="+v);
             }
         }catch (Exception e){
             e.printStackTrace();

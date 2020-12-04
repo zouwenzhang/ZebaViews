@@ -1,18 +1,23 @@
 package com.zeba.views.databind;
 
+import android.app.Activity;
+
 import com.zeba.views.SEditText;
 import com.zeba.views.STextView;
+import com.zeba.views.utils.LogViewUtil;
 
 import org.zeba.obj.proxy.ProxyFunc;
 
+import java.io.File;
 import java.lang.reflect.Field;
 
 public class DataBinder {
     private Object hostObj;
     private Object dataObj;
     private Object proxyObj;
+    public static boolean isDebug=false;
 
-    public DataBinder(Object host,Object obj){
+    public DataBinder(final Object host, Object obj){
         this.dataObj =obj;
         this.hostObj =host;
         bind(new ProxyFunc<DataBinder>() {
@@ -27,7 +32,6 @@ public class DataBinder {
                             if(mo==null){
                                 continue;
                             }
-                            System.out.println("dataObj1="+mo.getClass().getName()+",dataObj2="+dataObj.getClass().getName());
                             if(f.get(hostObj)==dataObj){
                                 f.set(hostObj,proxyObj);
                                 break;
@@ -36,6 +40,10 @@ public class DataBinder {
                     }
                 }catch (Exception e){
                     e.printStackTrace();
+                    if(hostObj instanceof Activity){
+                        Activity activity=(Activity) hostObj;
+                        LogViewUtil.logToFile(activity,LogViewUtil.getCrashInfo(e));
+                    }
                 }
             }
         });

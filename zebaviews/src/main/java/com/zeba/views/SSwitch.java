@@ -46,7 +46,7 @@ public class SSwitch extends FrameLayout implements SViewer {
         onBgView.setAlpha(0f);
         addView(onBgView, LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
         pointView=new SFrameLayout(context);
-        addView(pointView);
+        addView(pointView, LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
         reloadAttr(context);
         setOnClickListener(new OnClickListener() {
             @Override
@@ -58,15 +58,18 @@ public class SSwitch extends FrameLayout implements SViewer {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int h=getMeasuredHeight();
+        int h=MeasureSpec.getSize(heightMeasureSpec);
         int pwh=(int)(h*0.8f);
-        pointView.getLayoutParams().width=pwh;
-        pointView.getLayoutParams().height=pwh;
         LayoutParams lp=(LayoutParams) pointView.getLayoutParams();
         lp.gravity= Gravity.LEFT|Gravity.CENTER_VERTICAL;
         lp.leftMargin=(int)(h*0.1f);
-        pointView.setLayoutParams(pointView.getLayoutParams());
+        lp.topMargin=(int)(h*0.1f);
+        lp.rightMargin=(int)(h*0.1f);
+        lp.bottomMargin=(int)(h*0.1f);
+        lp.width=pwh;
+        lp.height=pwh;
+        pointView.setLayoutParams(lp);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         offBgView.getSAttr().setDefaultColor(sAttr.getOffBgColor());
         offBgView.getSAttr().setRoundRadius(h/2);
         offBgView.reloadAttr(getContext());
@@ -118,7 +121,7 @@ public class SSwitch extends FrameLayout implements SViewer {
             isRunning=true;
             if(isCheck){
                 new AnimCSS().view(pointView)
-                        .style("d:200;mx:0,"+(getMeasuredWidth()-getMeasuredHeight())+";ms:s2;")
+                        .style("d:200;mx:0,"+(getMeasuredWidth()-getMeasuredHeight())+";ms:s9;")
                         .start();
                 new AnimCSS().view(onBgView)
                         .style("d:200;a:1;af:0;at:1;")
@@ -131,7 +134,7 @@ public class SSwitch extends FrameLayout implements SViewer {
                         }).start();
             }else{
                 new AnimCSS().view(pointView)
-                        .style("d:200;mx:"+(getMeasuredWidth()-getMeasuredHeight())+",0;ms:s2;")
+                        .style("d:200;mx:"+(getMeasuredWidth()-getMeasuredHeight())+",0;ms:s9;")
                         .start();
                 new AnimCSS().view(onBgView)
                         .style("d:200;a:1;af:1;at:0;")

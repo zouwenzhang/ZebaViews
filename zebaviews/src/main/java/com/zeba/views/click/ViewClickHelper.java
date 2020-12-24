@@ -2,19 +2,18 @@ package com.zeba.views.click;
 
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.zeba.views.attr.SAttr;
 
-import java.lang.ref.WeakReference;
-
 public class ViewClickHelper {
     private ViewClickScaleHelper scaleHelper;
     private ViewClickAlpha2Helper alpha2Helper;
     private ViewClickRipple2Helper ripple2Helper;
-    private WeakReference<View> wrView;
+    private View view;
     private ViewSuperCallBack superCallBack;
     private SAttr attr;
     private int minMoveDistance;
@@ -23,7 +22,7 @@ public class ViewClickHelper {
     private int actionState=0;
 
     public ViewClickHelper(View v){
-        wrView=new WeakReference<>(v);
+        view=v;
         if(v!=null&&v instanceof ViewSuperCallBack){
             superCallBack=(ViewSuperCallBack) v;
         }
@@ -32,55 +31,46 @@ public class ViewClickHelper {
 
     public void setDrawable(SAttr attr){
         this.attr=attr;
-        if(wrView==null||wrView.get()==null){
-            return;
+        if(attr.hasDrawable()){
+            Drawable drawable=ShapeHelper.getShapeDrawable(attr);
+            if(attr.showType!=3){
+                view.setBackground(drawable);
+            }else{
+                Drawable rippleDrawable=RippleHelper.getRippleDrawable(drawable,attr);
+                if(rippleDrawable!=null){
+                    view.setBackground(rippleDrawable);
+                }else{
+                    view.setBackground(drawable);
+                    ripple2Helper=new ViewClickRipple2Helper();
+                    ripple2Helper.init(view.getContext(), view, attr.pressedColor,rippleCallBack);
+                }
+            }
         }
-        if(!attr.hasDrawable()){
-            return;
-        }
-        Drawable drawable=ShapeHelper.getShapeDrawable(attr);
-        if(attr.showType==0){
-            wrView.get().setBackground(drawable);
-        }else{
-            setDrawable(drawable,attr);
+        setClickStyle(attr);
+    }
+
+    private void setClickStyle(SAttr attr){
+        if(attr.showType==1){
+            scaleHelper=new ViewClickScaleHelper(view,attr.scaleTo,attr.scaleTime);
+        }else if(attr.showType==2){
+            alpha2Helper=new ViewClickAlpha2Helper(view,attr.alphaTo,attr.alphaTime);
         }
     }
 
-    private void setDrawable(Drawable drawable,SAttr attr){
-        if(wrView==null||wrView.get()==null){
-            return;
-        }
-        View view=wrView.get();
-        if(attr.showType==1){
-            view.setBackground(drawable);
-            scaleHelper=new ViewClickScaleHelper(view,attr.scaleTo,attr.scaleTime);
-        }else if(attr.showType==2){
-            view.setBackground(drawable);
-            alpha2Helper=new ViewClickAlpha2Helper(view,attr.alphaTo,attr.alphaTime);
-        }else if(attr.showType==3){
-            Drawable rippleDrawable=RippleHelper.getRippleDrawable(drawable,attr);
-            if(rippleDrawable!=null){
-                view.setBackground(rippleDrawable);
-            }else{
-                view.setBackground(drawable);
-                ripple2Helper=new ViewClickRipple2Helper();
-                ripple2Helper.init(view.getContext(), view, attr.pressedColor, new RippleDetector.Callback() {
-                    @Override
-                    public void performClickAfterAnimation() {
-                        if(superCallBack!=null){
-                            superCallBack.superPerformClick();
-                        }
-                    }
-                    @Override
-                    public void performLongClickAfterAnimation() {
-                        if(superCallBack!=null){
-                            superCallBack.superPerformLongClick();
-                        }
-                    }
-                });
+    private RippleDetector.Callback rippleCallBack=new RippleDetector.Callback() {
+        @Override
+        public void performClickAfterAnimation() {
+            if(superCallBack!=null){
+                superCallBack.superPerformClick();
             }
         }
-    }
+        @Override
+        public void performLongClickAfterAnimation() {
+            if(superCallBack!=null){
+                superCallBack.superPerformLongClick();
+            }
+        }
+    };
 
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
         if(ripple2Helper!=null){
@@ -89,13 +79,13 @@ public class ViewClickHelper {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        if(wrView.get().isEnabled()&&wrView.get().isClickable()){
+        if(view.isEnabled()&&view.isClickable()){
             switch(event.getAction()){
                 case MotionEvent.ACTION_DOWN:
                     mStartX=event.getRawX();
                     mStartY=event.getRawY();
                     actionState=0;
-                    wrView.get().postDelayed(new Runnable() {
+                    view.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             if(actionState!=0){
@@ -154,11 +144,8 @@ public class ViewClickHelper {
     }
 
     public void onDraw(Canvas canvas) {
-        if(wrView==null||wrView.get()==null){
-            return;
-        }
         if(ripple2Helper!=null){
-            ripple2Helper.onDraw(wrView.get(),canvas);
+            ripple2Helper.onDraw(view,canvas);
         }
     }
 
@@ -167,13 +154,13 @@ public class ViewClickHelper {
             return ripple2Helper.performClick();
         }
         if(scaleHelper!=null){
-            if(wrView==null||wrView.get()==null){
+            if(view==null){
                 if(superCallBack!=null){
                     return superCallBack.superPerformClick();
                 }
                 return true;
             }
-            wrView.get().postDelayed(new Runnable() {
+            view.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     if(superCallBack!=null){
@@ -197,6 +184,16 @@ public class ViewClickHelper {
             return superCallBack.superPerformLongClick();
         }
         return true;
+    }
+
+    public void printState(){
+        Log.e("zwz","scaleHelper="+scaleHelper);
+        if(scaleHelper!=null){
+            scaleHelper.printState();
+        }
+        Log.e("zwz","alpha2Helper="+alpha2Helper);
+        Log.e("zwz","ripple2Helper="+ripple2Helper);
+        Log.e("zwz","state="+actionState);
     }
 
 }

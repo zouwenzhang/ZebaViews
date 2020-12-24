@@ -8,6 +8,8 @@ import com.zeba.views.attr.SAttr;
 import com.zeba.views.drawables.ZBGDrawable;
 import com.zeba.views.css.CSSFormat;
 
+import java.util.Map;
+
 public class ShapeHelper {
 
     public static Drawable getShapeDrawable(SAttr attr) {
@@ -24,11 +26,12 @@ public class ShapeHelper {
         if (strokeWidth != 0) {
             dw.setStroke(strokeWidth, strokeColor == 0 ? Color.TRANSPARENT : strokeColor);
         }
-        if(attr.line!=null&&attr.line.size()!=0){
+        if(attr.gLine !=null&&!"".equals(attr.gLine)){
+            Map<String,String> map=CSSFormat.form(attr.gLine);
             dw.setDither(true);
-            dw.setColors(CSSFormat.toColors(attr.line.get("c")));
+            dw.setColors(CSSFormat.toColors(map.get("c")));
             dw.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-            int a=Integer.parseInt(attr.line.get("a"));//角度
+            int a=Integer.parseInt(map.get("a"));//角度
             switch(a){
                 case 0:dw.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);break;
                 case 45:dw.setOrientation(GradientDrawable.Orientation.TL_BR);break;
@@ -39,16 +42,18 @@ public class ShapeHelper {
                 case 270:dw.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);break;
                 case 315:dw.setOrientation(GradientDrawable.Orientation.BL_TR);break;
             }
-        }else if(attr.circle!=null&&attr.circle.size()!=0){
+        }else if(attr.gCircle !=null&&!"".equals(attr.gCircle)){
+            Map<String,String> map=CSSFormat.form(attr.gCircle);
             dw.setDither(true);
-            dw.setColors(CSSFormat.toColors(attr.circle.get("c"))); //添加颜色组
+            dw.setColors(CSSFormat.toColors(map.get("c"))); //添加颜色组
             dw.setGradientType(GradientDrawable.RADIAL_GRADIENT);//设置半径渐变
-            dw.setGradientRadius(Float.parseFloat(attr.circle.get("r")));//渐变的半径值
-        }else if(attr.sweep!=null&&attr.sweep.size()!=0){
+            dw.setGradientRadius(Float.parseFloat(map.get("r")));//渐变的半径值
+        }else if(attr.gSweep!=null&&!"".equals(attr.gSweep)){
+            Map<String,String> map=CSSFormat.form(attr.gSweep);
             dw.setDither(true);
-            dw.setColors(CSSFormat.toColors(attr.sweep.get("c"))); //添加颜色组
+            dw.setColors(CSSFormat.toColors(map.get("c"))); //添加颜色组
             dw.setGradientType(GradientDrawable.SWEEP_GRADIENT);//设置扫描渐变
-            dw.setGradientCenter(Float.parseFloat(attr.sweep.get("cx")),Float.parseFloat(attr.sweep.get("cy")));//渐变中心点
+            dw.setGradientCenter(Float.parseFloat(map.get("cx")),Float.parseFloat(map.get("cy")));//渐变中心点
         }else if (defaultColor != 0) {
             dw.setColor(defaultColor);
         }
@@ -57,8 +62,8 @@ public class ShapeHelper {
         } else if (topLeftRadius != 0 || topRightRadius != 0 || bottomRightRadius != 0 || bottomLeftRadius != 0) {
             dw.setCornerRadii(new float[]{topLeftRadius, topLeftRadius, topRightRadius, topRightRadius, bottomRightRadius, bottomRightRadius, bottomLeftRadius, bottomLeftRadius});
         }
-        if(attr.shadow!=null&&attr.shadow.size()!=0){
-            dw.setShadow(attr.shadow);
+        if(attr.shadow!=null&&!"".equals(attr.shadow)){
+            dw.setShadow(CSSFormat.form(attr.shadow));
         }
         return dw;
     }

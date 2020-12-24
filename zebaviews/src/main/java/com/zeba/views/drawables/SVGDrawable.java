@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.view.View;
 
+import com.zeba.views.css.CSSFormat;
 import com.zeba.views.utils.DpSpUtil;
 
 import java.io.IOException;
@@ -21,6 +22,10 @@ public class SVGDrawable {
     private int h;
     private String g;
     private int m;
+
+    public SVGDrawable(Context context, String attr){
+        this(context, CSSFormat.form(attr));
+    }
 
     public SVGDrawable(Context context, Map<String,String> info){
         InputStream is= null;

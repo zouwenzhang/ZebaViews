@@ -3,12 +3,12 @@ package com.zeba.views.adapter;
 import android.animation.Animator;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.zeba.views.SRefreshLayout;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -121,11 +121,11 @@ public abstract class SQuickAdapter<T> extends BaseQuickAdapter<T,BaseViewHolder
         loadData(isRefresh,null,list);
     }
 
-    public void loadData(SRefreshLayout refreshLayout,List list){
+    public void loadData(SwipeRefreshLayout refreshLayout, List list){
         loadData(pageNo==1,refreshLayout,list);
     }
 
-    public void loadData(boolean isRefresh,SRefreshLayout refreshLayout,List list){
+    public void loadData(boolean isRefresh,SwipeRefreshLayout refreshLayout,List list){
         if(refreshLayout!=null){
             refreshLayout.setRefreshing(false);
         }

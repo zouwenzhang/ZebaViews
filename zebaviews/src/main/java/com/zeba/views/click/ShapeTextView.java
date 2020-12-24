@@ -76,10 +76,10 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
             loadingHint=text;
         }
         TypeFaceManager.initTypeFace(context,this,sAttr.ttf);
-        if(sAttr.svg!=null&&sAttr.svg.size()!=0){
+        if(sAttr.svg!=null&&!"".equals(sAttr.svg)){
             svgDrawable=new SVGDrawable(context,sAttr.svg);
         }
-        if(sAttr.shadow!=null&&sAttr.shadow.size()!=0){
+        if(sAttr.shadow!=null&&!"".equals(sAttr.shadow)){
             setLayerType(LAYER_TYPE_SOFTWARE,null);
         }
         setShapeDrawable();
@@ -235,7 +235,6 @@ public class ShapeTextView extends AppCompatTextView implements ViewSuperCallBac
     @Override
     public boolean superOnTouchEvent(MotionEvent event) {
         return super.onTouchEvent(event);
-
     }
 
     public int dp2px(int dpVal) {

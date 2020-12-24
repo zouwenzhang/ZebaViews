@@ -5,10 +5,6 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import com.zeba.views.R;
-import com.zeba.views.css.CSSFormat;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SAttr {
     public int strokeWidth;
@@ -35,11 +31,11 @@ public class SAttr {
     public String pageCode;
     public String pageText;
     public String pageHint;
-    public Map<String,String> line;
-    public Map<String,String> sweep;
-    public Map<String,String> circle;
-    public Map<String,String> shadow;
-    public Map<String,String> svg;
+    public String gLine;
+    public String gSweep;
+    public String gCircle;
+    public String shadow;
+    public String svg;
 
     public int showType;
     public float scaleTo=0.95f;
@@ -48,11 +44,6 @@ public class SAttr {
     public int alphaTime=200;
     public SAttr(Context context,AttributeSet attrs){
         if(attrs==null){
-            line=new HashMap<>();
-            sweep=new HashMap<>();
-            circle=new HashMap<>();
-            shadow=new HashMap<>();
-            svg=new HashMap<>();
             return;
         }
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShapeTextView);
@@ -70,16 +61,11 @@ public class SAttr {
         css=typedArray.getString(R.styleable.ShapeTextView_css);
         anim=typedArray.getString(R.styleable.ShapeTextView_anim);
         ttf=typedArray.getString(R.styleable.ShapeTextView_ttf);
-        String lines=typedArray.getString(R.styleable.ShapeTextView_gradientLine);
-        line= CSSFormat.form(lines);
-        String sweeps=typedArray.getString(R.styleable.ShapeTextView_gradientSweep);
-        sweep= CSSFormat.form(sweeps);
-        String circles=typedArray.getString(R.styleable.ShapeTextView_gradientCircle);
-        circle=CSSFormat.form(circles);
-        String shadows=typedArray.getString(R.styleable.ShapeTextView_shadow);
-        shadow=CSSFormat.form(shadows);
-        String svgs=typedArray.getString(R.styleable.ShapeTextView_svg);
-        svg=CSSFormat.form(svgs);
+        gLine =typedArray.getString(R.styleable.ShapeTextView_gradientLine);
+        gSweep=typedArray.getString(R.styleable.ShapeTextView_gradientSweep);
+        gCircle =typedArray.getString(R.styleable.ShapeTextView_gradientCircle);
+        shadow=typedArray.getString(R.styleable.ShapeTextView_shadow);
+        svg=typedArray.getString(R.styleable.ShapeTextView_svg);
         fieldName=typedArray.getString(R.styleable.ShapeTextView_fieldName);
         bg=typedArray.getString(R.styleable.ShapeTextView_bg);
         img=typedArray.getString(R.styleable.ShapeTextView_img);
@@ -107,13 +93,13 @@ public class SAttr {
         if(strokeColor!=0||roundRadius!=0||defaultColor!=0){
             return true;
         }
-        if(line!=null&&!line.isEmpty()){
+        if(gLine !=null&&!gLine.isEmpty()){
             return true;
         }
-        if(sweep!=null&&!sweep.isEmpty()){
+        if(gSweep!=null&&!gSweep.isEmpty()){
             return true;
         }
-        if(circle!=null&&!circle.isEmpty()){
+        if(gCircle !=null&&!gCircle.isEmpty()){
             return true;
         }
         if(shadow!=null&&!shadow.isEmpty()){
@@ -230,23 +216,23 @@ public class SAttr {
         this.pageHint = pageHint;
     }
 
-    public void setLine(Map<String, String> line) {
-        this.line = line;
+    public void setGLine(String line) {
+        this.gLine = line;
     }
 
-    public void setSweep(Map<String, String> sweep) {
-        this.sweep = sweep;
+    public void setGSweep(String sweep) {
+        this.gSweep = sweep;
     }
 
-    public void setCircle(Map<String, String> circle) {
-        this.circle = circle;
+    public void setGCircle(String circle) {
+        this.gCircle = circle;
     }
 
-    public void setShadow(Map<String, String> shadow) {
+    public void setShadow(String shadow) {
         this.shadow = shadow;
     }
 
-    public void setSvg(Map<String, String> svg) {
+    public void setSvg(String svg) {
         this.svg = svg;
     }
 

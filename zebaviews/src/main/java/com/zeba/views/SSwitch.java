@@ -51,6 +51,9 @@ public class SSwitch extends FrameLayout implements SViewer {
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(switchCheckListener!=null&&!switchCheckListener.onChange(!isChecked)){
+                    return;
+                }
                 setChecked(!isChecked);
             }
         });
@@ -97,15 +100,19 @@ public class SSwitch extends FrameLayout implements SViewer {
         return isChecked;
     }
 
+    public void setCheckedNotify(boolean isCheck){
+        if(switchCheckListener!=null&&!switchCheckListener.onChange(isCheck)){
+            return;
+        }
+        setChecked(isCheck,true);
+    }
+
     public void setChecked(boolean isCheck){
         setChecked(isCheck,true);
     }
 
     public void setChecked(boolean isCheck,boolean isAnim){
-        if(isRunning){
-            return;
-        }
-        if(switchCheckListener!=null&&!switchCheckListener.onChange(isCheck)){
+        if(isRunning||isChecked==isCheck){
             return;
         }
         isChecked=isCheck;

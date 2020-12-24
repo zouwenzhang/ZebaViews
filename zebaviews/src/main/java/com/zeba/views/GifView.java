@@ -185,7 +185,12 @@ public class GifView extends View {
 	private void drawMovieFrame(Canvas canvas) {
 		// 设置要显示的帧，绘制即可
 		mMovie.setTime(mCurrentAnimationTime);
-		canvas.save(Canvas.MATRIX_SAVE_FLAG);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			canvas.saveLayer(0, 0, getWidth(), getHeight(), null);
+		}else{
+//			canvas.save(Canvas.MATRIX_SAVE_FLAG);
+			canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
+		}
 		canvas.scale(mScale, mScale);
 		mMovie.draw(canvas, mLeft / mScale, mTop / mScale);
 		canvas.restore();

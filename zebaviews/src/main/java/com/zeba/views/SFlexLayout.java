@@ -46,7 +46,7 @@ public class SFlexLayout extends FlexboxLayout implements ViewSuperCallBack, SVi
     public void reloadAttr(Context context) {
         styleCSS.setCSS(this,sAttr);
         animCSS.setCSS(this,sAttr.anim);
-        if(sAttr.shadow.size()!=0){
+        if(sAttr.shadow!=null&&!"".equals(sAttr.shadow)){
             setLayerType(LAYER_TYPE_SOFTWARE,null);
         }
         setShapeDrawable();

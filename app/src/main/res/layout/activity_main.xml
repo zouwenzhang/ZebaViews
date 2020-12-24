@@ -32,6 +32,17 @@
         android:textColor="#343434"
         android:text="123456"
         app:css="p:15;"/>
+    <com.zeba.views.STextView
+        android:tag="tv_scale_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:css="pl:15;pr:15;pt:10;pb:15;"
+        android:textColor="#ffffff"
+        app:defaultColor="#ff793c"
+        app:roundRadius="10dp"
+        android:textSize="14sp"
+        app:showType="scale"
+        android:text="缩放测试"/>
     <com.zeba.views.SHeaderListView
         android:id="@+id/h_list_view"
         android:layout_width="match_parent"
@@ -44,10 +55,5 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#634256"/>
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
     </com.zeba.views.SHeaderListView>
 </LinearLayout>

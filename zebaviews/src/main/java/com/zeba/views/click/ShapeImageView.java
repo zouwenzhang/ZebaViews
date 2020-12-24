@@ -15,6 +15,7 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 
 import com.zeba.views.attr.SAttr;
+import com.zeba.views.css.CSSFormat;
 import com.zeba.views.drawables.SVGDrawable;
 import com.zeba.views.css.AnimCSS;
 import com.zeba.views.css.StyleCSS;
@@ -63,6 +64,10 @@ public class ShapeImageView extends AppCompatImageView implements ViewSuperCallB
 
     public void setShapeDrawable(){
         clickHelper.setDrawable(sAttr);
+    }
+
+    public ViewClickHelper getClickHelper(){
+        return clickHelper;
     }
 
     @Override
@@ -242,8 +247,8 @@ public class ShapeImageView extends AppCompatImageView implements ViewSuperCallB
     public void reloadAttr(Context context) {
         styleCSS.setCSS(this,sAttr);
         animCSS.setCSS(this,sAttr.anim);
-        if(sAttr.svg.size()!=0){
-            svgDrawable=new SVGDrawable(context,sAttr.svg);
+        if(sAttr.svg!=null&&!"".equals(sAttr.svg)){
+            svgDrawable=new SVGDrawable(context, CSSFormat.form(sAttr.svg));
         }
         if(sAttr.roundRadius!=0){
             roundLeftTop=sAttr.roundRadius;
@@ -263,7 +268,7 @@ public class ShapeImageView extends AppCompatImageView implements ViewSuperCallB
 
         paint2 = new Paint();
         paint2.setXfermode(null);
-        if(sAttr.shadow.size()!=0){
+        if(sAttr.shadow!=null&&!"".equals(sAttr.shadow)){
             setLayerType(LAYER_TYPE_SOFTWARE,null);
         }
         setShapeDrawable();

@@ -25,6 +25,7 @@ public class CheckView extends SLinearLayout{
     private static Map<String, List<CheckView>> checkGroup=new HashMap<>();
     private ImageView ivSelect;
     private ImageView ivUnSelect;
+    private FrameLayout ivBody;
     private TextView tvText;
     private boolean isSelect=false;
     private Field dataField;
@@ -36,11 +37,13 @@ public class CheckView extends SLinearLayout{
     private OnSelectClickListener selectClickListener;
 
     public CheckView(Context context) {
-        this(context,null);
+        super(context);
+        init(context,null);
     }
 
     public CheckView(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        super(context, attrs);
+        init(context,attrs);
     }
 
     public CheckView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -51,17 +54,17 @@ public class CheckView extends SLinearLayout{
     private void init(Context context,AttributeSet attrs){
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER_VERTICAL);
-        FrameLayout fl=new FrameLayout(context);
+        ivBody=new FrameLayout(context);
         FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,FrameLayout.LayoutParams.WRAP_CONTENT);
         lp.gravity= Gravity.CENTER;
         ivUnSelect=new ImageView(context);
-        fl.addView(ivUnSelect,lp);
+        ivBody.addView(ivUnSelect,lp);
         lp=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,FrameLayout.LayoutParams.WRAP_CONTENT);
         lp.gravity= Gravity.CENTER;
         ivSelect=new ImageView(context);
         ivSelect.setAlpha(0f);
-        fl.addView(ivSelect,lp);
-        addView(fl);
+        ivBody.addView(ivSelect,lp);
+        addView(ivBody);
         tvText=new TextView(context);
         addView(tvText);
         if(attrs!=null){
@@ -78,7 +81,7 @@ public class CheckView extends SLinearLayout{
             LinearLayout.LayoutParams llp=new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
             float pd= array.getDimension(R.styleable.CheckView_iconPadding,0);
             llp.rightMargin=(int)pd;
-            fl.setLayoutParams(llp);
+            ivBody.setLayoutParams(llp);
             float textSize=array.getDimension(R.styleable.CheckView_android_textSize,14);
             tvText.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
             int color=array.getColor(R.styleable.CheckView_android_textColor, Color.BLACK);
@@ -104,6 +107,36 @@ public class CheckView extends SLinearLayout{
                 }
             }
         });
+    }
+
+    public void setGroupId(String id){
+        groupId=id;
+    }
+
+    public void setSelectIcon(Drawable drawable){
+        ivSelect.setImageDrawable(drawable);
+    }
+
+    public void setUnSelectIcon(Drawable drawable){
+        ivUnSelect.setImageDrawable(drawable);
+    }
+
+    public void setIconPadding(int px){
+        LinearLayout.LayoutParams llp=new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+        llp.rightMargin=px;
+        ivBody.setLayoutParams(llp);
+    }
+
+    public void setTextSize(int px){
+        tvText.setTextSize(TypedValue.COMPLEX_UNIT_PX,px);
+    }
+
+    public void setTextColor(int color){
+        tvText.setTextColor(color);
+    }
+
+    public void setText(CharSequence text){
+        tvText.setText(text);
     }
 
     public ImageView getSelectV(){
@@ -273,5 +306,13 @@ public class CheckView extends SLinearLayout{
             return true;
         }
         return false;
+    }
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public boolean isChecked(){
+        return isSelect;
     }
 }

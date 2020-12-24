@@ -36,9 +36,6 @@ public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack, 
     private void init(Context context,AttributeSet attrs){
         sAttr=new SAttr(context,attrs);
         clickHelper=new ViewClickHelper(this);
-        if(sAttr.shadow.size()!=0){
-            setLayerType(LAYER_TYPE_SOFTWARE,null);
-        }
         reloadAttr(context);
     }
 
@@ -116,6 +113,9 @@ public class ShapeFrameLayout extends FrameLayout implements ViewSuperCallBack, 
 
     @Override
     public void reloadAttr(Context context) {
+        if(sAttr.shadow!=null&&"".equals(sAttr.shadow)){
+            setLayerType(LAYER_TYPE_SOFTWARE,null);
+        }
         styleCSS.setCSS(this,sAttr);
         animCSS.setCSS(this,sAttr.css);
         setShapeDrawable();

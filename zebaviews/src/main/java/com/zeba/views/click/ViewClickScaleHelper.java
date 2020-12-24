@@ -2,6 +2,7 @@ package com.zeba.views.click;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.util.Log;
 import android.view.View;
 
 public class ViewClickScaleHelper {
@@ -94,5 +95,10 @@ public class ViewClickScaleHelper {
 				view.setScaleY(va);
 			}
 		});
+	}
+
+	public void printState(){
+		Log.e("zwz","scale="+scale);
+		Log.e("zwz","scaleTime="+scaleTime);
 	}
 }

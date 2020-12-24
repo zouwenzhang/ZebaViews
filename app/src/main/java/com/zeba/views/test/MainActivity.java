@@ -37,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
 //                tv1.dismissLoading();
 //            }
 //        });
+        getWindow().getDecorView().findViewWithTag("tv_scale_test").setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         findViewById(R.id.tv_button4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
